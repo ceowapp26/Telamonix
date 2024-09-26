@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('../../public/global/images/hero/hero-background-top-mask.png');
-
 html,
 body,
 :root {
@@ -252,9 +250,6 @@ input:focus:invalid {
     @apply bg-background text-foreground;
   }
 }
-
-
-
 
 
 
