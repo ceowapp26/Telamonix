@@ -1,7 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import PusherClient from 'pusher-js'
-import PusherServer from 'pusher'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
