@@ -1,6 +1,5 @@
 import React from 'react';
 import { Toaster } from 'sonner';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/providers/theme-provider';
@@ -10,11 +9,6 @@ import { NextUIProvider } from '@nextui-org/react';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
-
-const client = new ApolloClient({
-  uri: process.env.DATABASE_URL || 'https://example.com/graphql', 
-  cache: new InMemoryCache(),
-});
 
 export const metadata: Metadata = {
   title: 'WApp',

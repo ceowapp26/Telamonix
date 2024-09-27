@@ -76,6 +76,11 @@ module.exports = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(circle at 65% 15%, white 1px, aqua 3%, darkblue 60%, aqua 100%)',
         '404-bg': "url('https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif')",
+        'hero-background-top': "url('/global/images/hero/hero-background-top.png')",
+        'hero-background-top-mask': "url('/global/images/hero/hero-background-top-mask.png')",
+        'hero-gradient-top': 'linear-gradient(180deg, #b7a4fb00 0, #b7a4fb 100%, #8562ff 100%, #8562ff00 0%)',
+        'hero-gradient-bottom-line': 'linear-gradient(180deg,rgba(183,164,251,0) 0,rgba(183,164,251,.5) 100%,rgba(133,98,255,.5) 100%,rgba(133,98,255,0) 0%)',
+        'hero-gradient-bottom-ray': 'linear-gradient(180deg,rgba(255,255,255,0) 10.42%,rgba(255,255,255,.1) 26.56%,rgba(255,255,255,0) 37.5%)',
       },
       spacing: {
         '400px': '400px',
