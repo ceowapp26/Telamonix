@@ -2,6 +2,9 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
 var loadBarShader = {
   vs:`
@@ -574,7 +577,7 @@ class LoadGlass{
     this.scene = new THREE.Scene();
     //this.scene.background = new THREE.Color( 0x000000 );
     // CAMERA
-    this.camera = new THREE.PerspectiveCamera( 45, this.containerWidth/ this.containerHeight, 1, 20000 );
+    this.camera = new THREE.PerspectiveCamera( 60, this.containerWidth/ this.containerHeight, 1, 20000 );
     //DIR LIGHT
     const dirLight = new THREE.DirectionalLight( 0xffffff, 0.4 );
     dirLight.position.set( 0, 0, 1 ).normalize();
@@ -1208,9 +1211,23 @@ LoadBar.prototype.assignBufFloat = function( buf , index , f ){
 
 }
 
+// Define the schema for form validation
+const schema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters long" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters long" }),
+});
+
+
 const Contact = () => {
   const containerRef = useRef(null);
   const [glassInstance, setGlassInstance] = useState(null);
+  const [leftHovered, setLeftHovered] = useState(false);
+  const [rightHovered, setRightHovered] = useState(false);
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   useEffect(() => {
     let G = null;
@@ -1281,30 +1298,95 @@ const Contact = () => {
     };
   }, []);
 
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch('/api/send_email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert('Email sent successfully!');
+        reset(); // Reset the form
+      } else {
+        alert('Failed to send email. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  };
+
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">Contact Us</h2>
-        <div className="flex flex-col md:flex-row gap-8">
-          <div ref={containerRef} className="glass-block w-full md:w-1/2" style={{ height: '500px' }}></div>
-            <div className="w-full md:w-1/2">
+        <h2 className="text-3xl font-bold text-center mb-12 text-white">Contact Us</h2>
+        <div className="flex flex-col xl:flex-row gap-8">
+          <motion.div 
+            ref={containerRef} 
+            className="glass-block w-full xl:w-1/2 hidden xl:block" 
+            style={{ 
+              height: '100vh',
+              background: rightHovered 
+                ? 'linear-gradient(135deg, #1a202c 0%, #2d3748 100%)' 
+                : 'linear-gradient(135deg, #2d3748 0%, #4a5568 100%)',
+              transition: 'background 0.3s ease'
+            }}
+            onHoverStart={() => setLeftHovered(true)}
+            onHoverEnd={() => setLeftHovered(false)}
+          ></motion.div>
+          <motion.div 
+            className="w-full xl:w-1/2"
+            style={{ 
+              background: leftHovered 
+                ? 'linear-gradient(135deg, #1a202c 0%, #2d3748 100%)' 
+                : 'linear-gradient(135deg, #2d3748 0%, #4a5568 100%)',
+              transition: 'background 0.3s ease',
+              padding: '2rem',
+              borderRadius: '0.5rem'
+            }}
+            onHoverStart={() => setRightHovered(true)}
+            onHoverEnd={() => setRightHovered(false)}
+          >
             <motion.form
               className="grid grid-cols-1 gap-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              onSubmit={handleSubmit(onSubmit)}
             >
               <div>
-                <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">Name</label>
-                <input type="text" id="name" name="name" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required />
+                <label htmlFor="name" className="block text-gray-300 font-semibold mb-2">Name</label>
+                <input 
+                  {...register('name')}
+                  type="text" 
+                  id="name" 
+                  className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" 
+                />
+                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
               </div>
               <div>
-                <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">Email</label>
-                <input type="email" id="email" name="email" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required />
+                <label htmlFor="email" className="block text-gray-300 font-semibold mb-2">Email</label>
+                <input 
+                  {...register('email')}
+                  type="email" 
+                  id="email" 
+                  className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" 
+                />
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
               </div>
               <div>
-                <label htmlFor="message" className="block text-gray-700 font-semibold mb-2">Message</label>
-                <textarea id="message" name="message" rows="4" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required></textarea>
+                <label htmlFor="message" className="block text-gray-300 font-semibold mb-2">Message</label>
+                <textarea 
+                  {...register('message')}
+                  id="message" 
+                  rows="4" 
+                  className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" 
+                ></textarea>
+                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
               </div>
               <motion.button
                 type="submit"
@@ -1315,7 +1397,7 @@ const Contact = () => {
                 Send Message
               </motion.button>
             </motion.form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

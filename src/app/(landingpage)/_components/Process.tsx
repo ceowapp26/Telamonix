@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import $ from 'jquery';
-import { Rocket } from 'lucide-react';
+import { Rocket, CheckCircle, Clock, Users, Cog, Headphones, ChevronDown } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent, Card, CardHeader, CardBody, CardFooter, Image, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
 
 const steps = [
@@ -127,22 +127,52 @@ const StepCard = ({ title, content, isOpen, onOpenChange, onClose }) => {
   );
 }
 
+const ProcessIcon = ({ icon: Icon, isActive }) => {
+  return (
+    <motion.div
+      className={`w-24 h-12 mb-24 rounded-lg flex items-center justify-center ${
+        isActive ? 'bg-indigo-600' : 'bg-gray-300'
+      }`}
+      initial={{ rotateY: 0, x: 20 }}
+      animate={{ 
+        x: isActive ? -30 : 20,
+        rotateY: isActive ? 180 : 0
+      }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+    >
+      <motion.div
+        className="w-full h-full flex items-center justify-center"
+        style={{ rotateY: isActive ? 180 : 0 }}
+      >
+        <Icon className={`w-6 h-6 ${isActive ? 'text-white' : 'text-gray-600'}`} />
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const Process = () => {
+  const [isUpdated, setIsUpdated] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [previousStep, setPreviousStep] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
   const sectionRef = useRef(null);
   const stepsRef = useRef([]);
   const stepPositionsRef = useRef(new Map());
   const rocketRef = useRef(null);
+  const smokeRef = useRef(null);
+  const rocketContainerRef = useRef(null);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-
+    if (!sectionRef.current || !rocketContainerRef.current) return;
+    const updateContainerHeight = () => {
+      if (rocketContainerRef.current) {
+        setContainerHeight(rocketContainerRef.current.clientHeight);
+      }
+    };
+    updateContainerHeight();
+    window.addEventListener('resize', updateContainerHeight);
     const sectionRect = sectionRef.current.getBoundingClientRect();
     const sectionTop = sectionRect.top;
     const sectionBottom = sectionRect.bottom;
-
-    // Create a map of step positions
     stepPositionsRef.current = new Map(
       stepsRef.current.map((step, index) => {
         if (!step) return [index, null];
@@ -158,14 +188,13 @@ const Process = () => {
     );
 
     const handleScroll = () => {
-      const scrollTop = $(document.body).scrollTop() + 150;
-
-        console.log("this is scrollTop", scrollTop)
-
-                console.log("this is stepPositionsRef.current", stepPositionsRef.current)
-
-
-      if (scrollTop < sectionTop || scrollTop > sectionBottom) {
+      const scrollTop = $(document.body).scrollTop() + 200;
+      if (scrollTop < sectionTop) {
+        setCurrentStep(0)
+        return;
+      }
+      if (scrollTop > sectionBottom) {
+        setCurrentStep(4)
         return;
       }
       const currentStepIndex = Array.from(stepPositionsRef.current.entries()).find(
@@ -176,8 +205,14 @@ const Process = () => {
       );
 
       if (currentStepIndex) {
-        setCurrentStep(currentStepIndex[0]);
-      }
+        const newStep = currentStepIndex[0];
+        if (newStep !== currentStep) {
+          setCurrentStep(newStep);
+          setIsUpdated(true);
+        } else {
+          setIsUpdated(false);
+        }
+      } 
     };
 
     $(document.body).on('scroll', handleScroll);
@@ -188,39 +223,29 @@ const Process = () => {
     };
   }, []);
 
-  useEffect(() => {
-    moveRocket(currentStep);
-  }, [currentStep]);
-
-
-  const moveRocket = (stepIndex) => {
-    if (!rocketRef.current) return;
-
-    const stepElement = stepsRef.current[stepIndex];
-    if (!stepElement) return;
-
-    const rocketRect = rocketRef.current.getBoundingClientRect();
-    const stepRect = stepElement.getBoundingClientRect();
-
-    const newTop = stepRect.top - rocketRect.height / 2 + window.pageYOffset;
-    rocketRef.current.style.top = `${newTop}px`;
-
-    // Calculate the angle to point towards the step card
-    const rocketCenterX = rocketRect.left + rocketRect.width / 2;
-    const rocketCenterY = newTop + rocketRect.height / 2;
-    const stepCenterX = stepRect.left + stepRect.width / 2;
-    const stepCenterY = stepRect.top + stepRect.height / 2;
-
-    const angle = Math.atan2(stepCenterY - rocketCenterY, stepCenterX - rocketCenterX) * (180 / Math.PI);
-    
-    // Determine the direction of movement
-    const direction = stepIndex > previousStep ? 1 : -1;
-    
-    // Rotate the rocket only when changing steps
-    if (stepIndex !== previousStep) {
-      rocketRef.current.style.transform = `rotate(${angle + (direction > 0 ? 0 : 180)}deg)`;
+  const calculateRocketPosition = (step) => {
+    const stepHeight = containerHeight / 5;
+    const initialOffset = 0;
+    const stepOffset = 50;
+    if (step === 0) {
+      return initialOffset;
+    } else {
+      return stepHeight * step + stepOffset;
     }
   };
+
+  const calculateSmokeHeight = (step) => {
+    const stepHeight = containerHeight / 5;
+    const initialOffset = 0;
+    const stepOffset = 50;
+    if (step === 0) {
+      return initialOffset;
+    } else {
+      return stepHeight * step + stepOffset;
+    }
+  };
+
+  const iconComponents = [CheckCircle, Clock, Users, Cog, Headphones];
 
   return (
     <section 
@@ -237,43 +262,58 @@ const Process = () => {
         >
           Our Process
         </motion.h2>
-        <div className="relative flex justify-center">
-          <div className="absolute left-0 w-1 bg-gradient-to-b from-indigo-200 to-purple-200 h-full">
-            <motion.div
-              className="absolute left-[-12px] w-6 h-full"
-              initial={{ height: 0 }}
-              animate={{ height: `${(currentStep + 1) * 25}%` }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="w-full h-full relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-indigo-500 via-purple-500 to-pink-500 animate-pulse" style={{ filter: 'blur(8px)' }} />
+        <div className="relative flex justify-between items-start">
+          <div className="w-2/3">
+            <div className="relative flex justify-center">
+              <div className="absolute left-0 h-full top-16 bottom-24" ref={rocketContainerRef}>
+                <motion.div
+                  className="absolute left-4 w-6 h-full"
+                  initial={{ height: 50 }}
+                  animate={{ height: calculateSmokeHeight(currentStep) }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="w-full h-full relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-t from-indigo-500 via-purple-500 to-pink-500 animate-pulse" style={{ filter: 'blur(8px)' }} />
+                  </div>
+                </motion.div>
+                <motion.div
+                  ref={rocketRef}
+                  className="absolute left-0 z-10"
+                  initial={{ top: 0, rotate: 135 }}
+                  animate={{
+                    rotate: isUpdated ? 0 : 135,
+                    top: calculateRocketPosition(currentStep),
+                    transition: { duration: 0.5, type: 'spring', stiffness: 100 }
+                  }}
+                >
+                  <Rocket className="text-indigo-600 h-14 w-14 drop-shadow-lg" />
+                </motion.div>
               </div>
-            </motion.div>
+              <div className="space-y-24 py-8 max-w-3xl ml-64">
+                {steps.map((step, index) => (
+                  <div key={index} ref={el => stepsRef.current[index] = el}>
+                    <StepItem 
+                      step={step} 
+                      index={index} 
+                      isActive={index === currentStep}
+                      isCompleted={index < currentStep}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          
-          <motion.div
-            ref={rocketRef}
-            className="absolute left-[-25px] z-10"
-            initial={{ top: 0, rotate: 90 }}
-            animate={{ 
-              top: `${currentStep * 25}%`,
-              transition: { duration: 0.5, type: 'spring', stiffness: 100 }
-            }}
-          >
-            <Rocket className="text-indigo-600 h-14 w-14 drop-shadow-lg" />
-          </motion.div>
-          
-          <div className="space-y-24 py-8 max-w-3xl ml-16">
-            {steps.map((step, index) => (
-              <div key={index} ref={el => stepsRef.current[index] = el}>
-                <StepItem 
-                  step={step} 
-                  index={index} 
-                  isActive={index === currentStep}
-                  isCompleted={index < currentStep}
-                />
-              </div>
-            ))}
+          <div className="w-1/3 relative bottom-48 mt-56 hidden md:block">
+            <div className="absolute right-32 top-0 bottom-0 w-1 h-full bg-indigo-200" />
+            <div className="space-y-40">
+              {steps.map((step, index) => (
+                <div key={index} className="relative top-24 h-28">
+                  <div className="absolute right-32 transform -translate-y-1/2">
+                    <ProcessIcon icon={iconComponents[index]} isActive={index === currentStep} />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -284,10 +324,7 @@ const Process = () => {
 const StepItem = ({ step, index, isActive, isCompleted }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
-  const [ref, inView] = useInView({
-    threshold: 0.5,
-    triggerOnce: true,
-  });
+  const [ref, inView] = useInView({ threshold: 0.5, triggerOnce: true });
 
   useEffect(() => {
     if (inView) {
@@ -296,15 +333,11 @@ const StepItem = ({ step, index, isActive, isCompleted }) => {
   }, [controls, inView]);
 
   const variants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, x: -50 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: {
-        type: 'spring',
-        damping: 12,
-        stiffness: 100,
-      },
+      x: 0,
+      transition: { type: 'spring', damping: 12, stiffness: 100 },
     },
   };
 
@@ -314,22 +347,30 @@ const StepItem = ({ step, index, isActive, isCompleted }) => {
       variants={variants}
       initial="hidden"
       animate={controls}
-      className="flex items-start"
+      className="w-full pr-16"
     >
-      <div className="relative mr-4">
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${isActive ? 'bg-indigo-600' : isCompleted ? 'bg-purple-500' : 'bg-gray-400'}`}>
-          {step.number}
-        </div>
-      </div>
       <motion.div 
-        className={`flex-1 p-6 rounded-lg shadow-lg cursor-pointer transition-all duration-300 ${isActive ? 'bg-white scale-105 shadow-xl' : 'bg-gray-50'}`}
+        className={`p-6 rounded-lg shadow-lg cursor-pointer transition-all duration-300 ${
+          isActive ? 'bg-white scale-105 shadow-xl' : 'bg-gray-50'
+        }`}
         whileHover={{ scale: isActive ? 1.05 : 1.02, boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
         onClick={onOpen}
       >
-        <div className="flex items-center mb-4">
-          <h3 className={`text-xl font-semibold ${isActive ? 'text-indigo-800' : 'text-gray-800'}`}>{step.title}</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className={`text-xl font-semibold ${isActive ? 'text-indigo-800' : 'text-gray-800'}`}>
+            {step.title}
+          </h3>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            isActive ? 'bg-indigo-600' : isCompleted ? 'bg-purple-500' : 'bg-gray-400'
+          } text-white font-bold`}>
+            {step.number}
+          </div>
         </div>
-        <p className={`${isActive ? 'text-gray-700' : 'text-gray-600'}`}>{step.description}</p>
+        <p className={`${isActive ? 'text-gray-700' : 'text-gray-600'} mb-4`}>{step.description}</p>
+        <div className="flex items-center text-indigo-600">
+          <span className="mr-2">Learn More</span>
+          <ChevronDown size={16} />
+        </div>
       </motion.div>
       <StepCard
         isOpen={isOpen}
@@ -338,7 +379,7 @@ const StepItem = ({ step, index, isActive, isCompleted }) => {
         content={
           <ul className="list-disc pl-5">
             {step.details.map((detail, i) => (
-              <li key={i} className="text-sm text-gray-200 mb-2">{detail}</li>
+              <li key={i} className="text-sm mb-2">{detail}</li>
             ))}
           </ul>
         }

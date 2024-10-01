@@ -50,22 +50,22 @@ const MenuLink = ({ linkRef, href, index, focusMenu, isActive, children }) => {
       >
         <span className="relative z-10">{children}</span>
         <motion.div
-          className="relative w-4 h-4 ml-1"
+          className="relative w-[10px] h-[10px] ml-1"
           initial={false}
           animate={{ rotate: isActive ? 180 : 0 }}
-          style={{ marginTop: isActive ? 0 : -6 }}
+          style={{ marginTop: isActive ? 0 : -12 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <motion.span
-            className="absolute top-2 left-0 w-3 h-0.5 bg-white origin-left rounded-full"
+            className="absolute top-2 left-0 w-2 h-0.5 bg-white origin-left rounded-full"
             initial={false}
-            animate={{ rotate: isActive ? -45 : 45, width: isActive ? "12px" : "12px" }}
+            animate={{ rotate: isActive ? -45 : 45, width: isActive ? "8px" : "8px" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           />
           <motion.span
-            className="absolute top-2 right-0 w-3 h-0.5 bg-white origin-right rounded-full"
+            className="absolute top-2 right-0 w-2 h-0.5 bg-white origin-right rounded-full"
             initial={false}
-            animate={{ rotate: isActive ? 45 : -45, width: isActive ? "12px" : "12px" }}
+            animate={{ rotate: isActive ? 45 : -45, width: isActive ? "8px" : "8px" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           />
         </motion.div>
@@ -134,8 +134,8 @@ return (
     className="z-[55] nav-header dark:shadow-blue bg-transparent fixed top-0 items-center self-center flex w-full max-w-full justify-center gap-5 my-auto tablet:block"
   >
     <div className="flex max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-16 items-center">
-      <div className="flex-shrink-0 absolute w-10 h-10">
-       <div className="text-gray-800 font-semibold text-lg">
+      <div className="flex-shrink-0 absolute w-12 h-12">
+       <div className="text-gray-800 font-semibold text-xl">
           <Logo width={500} height={500} />
         </div>
       </div>
@@ -149,24 +149,24 @@ return (
         >
           Products
         </MenuLink>
-        <Link 
-          ref={el => itemRefs.current[1] = el}
-          onFocus={(event) => focusMenu(1, event)}
-          onMouseEnter={(event) => focusMenu(1, event)}
-          href="/solutions"
-          className="text-white text-center text-base font-medium leading-6 tracking-wide whitespace-nowrap transition-all duration-200"
+        <MenuLink
+          index={1}
+          linkRef={el => itemRefs.current[1] = el}
+          focusMenu={focusMenu}
+          href={"/solutions"}
+          isActive={hovering === 1}
         >
           Solutions
-        </Link>
-        <Link 
-          ref={el => itemRefs.current[2] = el}
-          onFocus={(event) => focusMenu(2, event)}
-          onMouseEnter={(event) => focusMenu(2, event)}
-          href="/resources"
-          className="text-white text-center text-base font-medium leading-6 tracking-wide whitespace-nowrap transition-all duration-200"
+        </MenuLink>
+         <MenuLink
+          index={2}
+          linkRef={el => itemRefs.current[2] = el}
+          focusMenu={focusMenu}
+          href={"/resources"}
+          isActive={hovering === 2}
         >
           Resources
-        </Link>
+        </MenuLink>
         <Link href="/pricing" className="text-white text-center text-base font-medium leading-6 tracking-wide whitespace-nowrap transition-all duration-200">
           Pricing
         </Link>
@@ -177,7 +177,7 @@ return (
       {hovering !== null && (
         <div className="absolute z-[50] -ml-[80px] 2xl:ml-[50px] top-16 pt-2 w-full" style={{ left: popoverLeft ?? 0 }}>
           <div className={clsx(hovering !== null ? "transition-opacity duration-200" : "opacity-0 pointer-events-none")}>
-            <div style={{ height: popoverHeight || 100, width: popoverWidth || 500 }} className="bg-transparent max-h-[600px] overflow-y-auto transform-gpu rounded shadow-lg relative overflow-x-hidden transition-all duration-200">
+            <div style={{ height: popoverHeight || 500, width: popoverWidth || 1200 }} className="bg-transparent max-h-[600px] overflow-y-auto transform-gpu rounded shadow-lg relative overflow-x-hidden transition-all duration-200">
               <MenuWrapper className="w-[72rem]" index={0} hovering={hovering}>
                 <ProductMenu ref={ref => refs.current[0] = ref} />
               </MenuWrapper>

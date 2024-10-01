@@ -1,15 +1,112 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { motion } from 'framer-motion';
-import React, { useRef, useState, useMemo, useEffect, Suspense } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import React, { useRef, useState, useMemo, useEffect, Suspense, useCallback } from 'react';
 import { gsap } from 'gsap';
 import * as THREE from 'three';
 import { Decal, Float, OrbitControls, Preload, useTexture, Text, Billboard, Sphere, MeshDistortMaterial, useGLTF, Environment, ContactShadows } from '@react-three/drei';
 import { technologies } from "@/constants/landing";
 import FloatLaptop from "./FloatLaptop";
 import Image from 'next/image'
+import { FaArrowRight } from 'react-icons/fa';
+
+const CustomButton = ({ text = 'Explore', onClick }) => {
+  return (
+    <div className="relative w-full sm:w-[200px] md:w-[220px] lg:w-[250px] h-[40px] sm:h-[45px] md:h-[50px]">
+      <motion.button
+        className="tracking-wider bg-transparent text-white relative outline-none border border-white/50 h-full w-full text-xs sm:text-sm overflow-hidden group flex items-center justify-between px-3 sm:px-4"
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        onClick={onClick}
+      >
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500"
+          initial={{ x: "-50%" }}
+          whileHover={{ x: "50%" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute inset-0 bg-white opacity-20"
+          initial={{ x: "0%" }}
+          whileHover={{ x: "100%" }}
+          transition={{ duration: 0.3, delay: 0.1, ease: "easeInOut" }}
+        />
+        <motion.span
+          className="relative z-10 flex items-center justify-between w-full"
+          initial={{ x: "50%" }}
+          whileHover={{ x: "0%" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <span>{text}</span>
+          <FaArrowRight className="text-white text-sm sm:text-base md:text-lg lg:text-xl" />
+        </motion.span>
+      </motion.button>
+    </div>
+  );
+};
+
+const TypewriterEffect = ({ texts, speed = 50, delayBetweenTexts = 2000 }) => {
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const cursorControls = useAnimation();
+  const charControls = useAnimation();
+
+  const typeText = useCallback(() => {
+    const currentText = texts[currentTextIndex];
+    
+    if (!isDeleting && displayedText.length < currentText.length) {
+      setDisplayedText(currentText.slice(0, displayedText.length + 1));
+      charControls.start({
+        scale: [1, 1.2, 1],
+        transition: { duration: 0.2 }
+      });
+    } else if (isDeleting && displayedText.length > 0) {
+      setDisplayedText(displayedText.slice(0, -1));
+    } else if (displayedText.length === currentText.length) {
+      setTimeout(() => setIsDeleting(true), delayBetweenTexts);
+    } else if (isDeleting && displayedText.length === 0) {
+      setIsDeleting(false);
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+    }
+  }, [texts, currentTextIndex, displayedText, isDeleting, charControls, delayBetweenTexts]);
+
+  useEffect(() => {
+    const timeout = setTimeout(typeText, isDeleting ? speed / 2 : speed);
+    return () => clearTimeout(timeout);
+  }, [typeText, isDeleting, speed]);
+
+  useEffect(() => {
+    cursorControls.start({
+      opacity: [0, 1],
+      transition: {
+        duration: 0.5,
+        repeat: Infinity,
+        repeatType: 'reverse',
+      },
+    });
+  }, [cursorControls]);
+
+  return (
+    <div className="relative text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl tracking-wider">
+      {displayedText.split('').map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0 }}
+          animate={i === displayedText.length - 1 ? charControls : { opacity: 1 }}
+          className="inline-block"
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+      <motion.div
+        className="inline-block overflow-hidden absolute w-[2px] sm:w-[3px] h-[18px] sm:h-[24px] ml-1 bg-white"
+        animate={cursorControls}
+      />
+    </div>
+  );
+};
 
 const HeroInfo = () => {
-
   const maskImages = [
     '/global/images/hero/hero-background-bottom-line-1.png',
     '/global/images/hero/hero-background-bottom-line-2.png',
@@ -27,7 +124,7 @@ const HeroInfo = () => {
   return (
     <div className="w-full h-full flex flex-col">
       <div className="h-screen bg-[#0a0118]">
-        <div className="absolute top-[133px] left-[8%] pointer-events-none w-[1248px] z-50">
+        <div className="absolute top-[10%] sm:top-[15%] md:top-[20%] left-0 sm:left-[8%] pointer-events-none w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] z-50">
           <div className="relative w-full h-[202px] mb-[85px] bg-hero-background-top bg-no-repeat bg-contain">
             <div 
               className="w-full h-full absolute top-0 left-0 mix-blend-overlay bg-no-repeat bg-contain"
@@ -79,60 +176,66 @@ const HeroInfo = () => {
               <div></div>
             </div>
           </div>
-          <div className="absolute top-[30%] left-[8%] flex flex-col justify-center w-1/2 h-[30%]">
+          <div className="absolute top-[15%] left-0 xl:left-[8%] flex flex-col justify-center w-full xl:w-1/2 mx-0 h-[30%] px-3">
             <div className="flex">
               <div className="w-1/2">
-                <h2 className="text-2xl font-bold text-white">The all-in-one education platform for</h2>
+                <h2 className="text-2xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">Telamonix <span>provide solutions for</span></h2>
               </div>
-              <div className="w-1/2">
-                <b>
-                  <div className="text-2xl font-bold text-white">
-                    STUDENTS<br />
-                    TEACHERS<br />
-                    EDUCATORS
+              <div className="flex justify-center items-center w-full">
+                <b className="relative h-[50px] float-left top-0 overflow-hidden">
+                  <div className="relative inline-block whitespace-nowrap text-transparent bg-gradient-to-r from-red-500 via-orange-500 to-purple-600 bg-clip-text animate-gradient bg-[200%_200%] text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl px-1 animate-moveTxt">
+                    INDIVIDUALS<br />
+                    STARTUPS<br />
+                    ENTERPRICES
                   </div>
                 </b>
               </div>
             </div>
-            <hr className="w-[30%] my-4 ml-[15%] border-white" />
-            <p className="text-lg text-white">
-              K2Edu provides the best education tools and knowledge base for everyone.
-            </p>
-            <div className="mt-8">
-              <h4 className="text-[#F8F8FA]">Trusted By Trailblazers</h4>
-              <div className="mt-4 overflow-hidden">
-                <div className="flex animate-marquee max-w-[250px]">
+            <hr className="w-full h-full flex" />
+            <div className="relative w-full h-full py-4 sm:py-6 md:py-8 lg:py-10">
+              <TypewriterEffect 
+                texts={[
+                  "Telamonix provides optimal solutions to your problems.",
+                  "We transform ideas into reality.",
+                  "Innovate, Create, Succeed with Telamonix."
+                ]} 
+                speed={50} 
+                delayBetweenTexts={2000}
+              />
+            </div>
+            <div className="mt-4 sm:mt-6 md:mt-8">
+              <h3 className="text-white text-sm sm:text-base md:text-lg">Partnered With</h3>
+              <div className="mt-2 sm:mt-4 overflow-hidden">
+                <div className="flex animate-marquee max-w-[200px] sm:max-w-[250px]">
                   {companyLogos.map((logo, index) => (
                     <Image
                       key={index}
                       src={logo}
                       alt={`Company Logo ${index + 1}`}
-                      width={32} 
-                      height={32}
-                      className="mx-4"
+                      width={24} 
+                      height={24}
+                      className="mx-2 sm:mx-4"
                     />
                   ))}
                 </div>
               </div>
             </div>
-            <div className="flex justify-around mt-8">
+            <div className="flex justify-between mt-4 sm:mt-6 md:mt-8">
               <div className="text-center">
-                <h4 className="text-white">Wallets</h4>
-                <div className="text-2xl font-bold text-white">25m</div>
+                <h4 className="text-white text-xs sm:text-sm md:text-base">Projects</h4>
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">50+</div>
               </div>
               <div className="text-center">
-                <h4 className="text-white">Developers</h4>
-                <div className="text-2xl font-bold text-white">170k</div>
+                <h4 className="text-white text-xs sm:text-sm md:text-base">Experience</h4>
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">5+</div>
               </div>
               <div className="text-center">
-                <h4 className="text-white">Funding</h4>
-                <div className="text-2xl font-bold text-white">$80m+</div>
+                <h4 className="text-white text-xs sm:text-sm md:text-base">Rating</h4>
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">5</div>
               </div>
             </div>
-            <div className="mt-8">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                Get Started
-              </button>
+            <div className="relative mt-4 sm:mt-6 md:mt-8 pointer-events-auto cursor-pointer">
+              <CustomButton text="Booking" />
             </div>
           </div>
         </div>
@@ -140,6 +243,7 @@ const HeroInfo = () => {
     </div>
   );
 };
+
 
 const Hero = () => {
   const headingRef = useRef();
@@ -154,9 +258,17 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative h-screen w-full bg-black overflow-hidden">
-      <HeroScene />
-      <HeroInfo />
+    <section className="relative w-full h-full bg-black rounded-b-3xl overflow-hidden">
+      <div className="container mx-auto px-0 xl:px-4">
+        <div className="flex flex-col xl:flex-row min-h-screen h-full">
+          <div className="w-full flex xl:w-1/2 py-8 xl:py-0">
+            <HeroInfo />
+          </div>
+          <div className="hidden xl:block w-1/2 relative">
+            <HeroScene />
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
@@ -262,7 +374,7 @@ const Scene = () => {
   });
 
   return (
-    <group ref={groupRef} position={[20, -5, -10.5]} scale={1.2} rotation={[0, -Math.PI / 4, 0]}>
+    <group ref={groupRef} position={[8, -5, -10.5]} scale={1.2} rotation={[0, -Math.PI / 4, 0]}>
       <FloatLaptop />
       <Cloud technologies={technologies} />
     </group>
@@ -271,13 +383,17 @@ const Scene = () => {
 
 const HeroScene = () => {
   return (
-    <Canvas camera={{ position: [0, 0, 20], fov: 55 }} style={{ width: '100vw', height: '100vh' }}>
+    <Canvas 
+      camera={{ position: [0, 0, 20], fov: 55 }}
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      gl={{ alpha: true, antialias: true }}
+    >
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
-      <Suspense fallback={null}>
+      <React.Suspense fallback={null}>
         <Scene />
         <Environment preset="city" />
-      </Suspense>
+      </React.Suspense>
       <ContactShadows position={[0, -4.5, 0]} scale={20} blur={2} far={4.5} />
       <OrbitControls enablePan={false} enableZoom={false} minPolarAngle={Math.PI / 3} maxPolarAngle={Math.PI / 2} />
       <Preload all />
@@ -286,4 +402,6 @@ const HeroScene = () => {
 };
 
 export default Hero;
+
+
 

@@ -58,8 +58,8 @@ module.exports = {
         mobileS: { max: '320px' },
         mobileM: { max: '375px' },
         mobileML: { max: '475px' },
-        mobileL: { max: '480px' },
-        mobileXL: { max: '640px' },
+        mobileL: { min: '480px' },
+        mobileXL: { min: '640px' },
         tablet: { max: '768px' },
         tabletXL: { max: '1080px' },
         laptop: { max: '1024px' },
@@ -238,6 +238,23 @@ module.exports = {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(-100%)' },
         },
+        'scroll': {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        'jello-horizontal': {
+          '0%,100%': { transform: 'scale3d(1, 1, 1)' },
+          '30%': { transform: 'scale3d(1.25, 0.75, 1)' },
+          '40%': { transform: 'scale3d(0.75, 1.25, 1)' },
+          '50%': { transform: 'scale3d(1.15, 0.85, 1)' },
+          '65%': { transform: 'scale3d(0.95, 1.05, 1)' },
+          '75%': { transform: 'scale3d(1.05, 0.95, 1)' },
+        },
+        'focuse': {
+          '0%': { transform: 'scale(0.8)', opacity: 1 },
+          '75%': { transform: 'scale(1.2)', opacity: 0 },
+          '100%': { transform: 'scale(1.2)', opacity: 0 },
+        },
       },
       animation: {
         'tile': 'tile 8s infinite',
@@ -259,7 +276,15 @@ module.exports = {
         'lineAnimation': 'lineAnimation 4s infinite cubic-bezier(.62,.62,.14,1)',
         'bottomRayAnimation': 'bottomRayAnimation 10.2s infinite cubic-bezier(.62,.62,0,1)',
         'marquee': 'marquee 25s linear infinite',
+        'scroll': 'scroll 20s linear infinite',
+        'jello-horizontal': 'jello-horizontal 0.9s both',
+        'focuse': 'focuse 1.5s linear infinite',
       },
+    },
+  },
+  variants: {
+    extend: {
+      animation: ['hover', 'focus'],
     },
   },
   plugins: [

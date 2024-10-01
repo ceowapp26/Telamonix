@@ -18,7 +18,7 @@ export const Logo: React.FC<LogoProps> = ({height, width}) => {
   return (
     <a href="/home" className="flex cursor-pointer justify-center items-center gap-x-4">
       <Image
-        src="/global/company_logos/wapp-logo.png"
+        src="/global/company_logos/telamonix.png"
         height={height}
         width={width}
         alt="Logo"

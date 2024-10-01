@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,16 +14,16 @@ const technologies = ["Web", "Mobile", "Application", "Data Science", "AI", "Clo
 const industries = ["IT", "Construction", "Hospitality", "E-commerce"];
 
 const projects = [
-  { title: 'E-commerce Platform', image: '/api/placeholder/600/400', tags: ['Web', 'E-commerce'] },
-  { title: 'Inventory Management System', image: '/api/placeholder/600/400', tags: ['Web', 'Application', 'IT'] },
-  { title: 'Mobile Banking App', image: '/api/placeholder/600/400', tags: ['Mobile', 'IT'] },
-  { title: 'Predictive Analytics Dashboard', image: '/api/placeholder/600/400', tags: ['Data Science', 'IT'] },
-  { title: 'AI-powered Chatbot', image: '/api/placeholder/600/400', tags: ['AI', 'IT'] },
-  { title: 'Cloud Migration Service', image: '/api/placeholder/600/400', tags: ['Cloud Services', 'IT'] },
-  { title: 'Machine Learning Model for Finance', image: '/api/placeholder/600/400', tags: ['AI', 'Data Science', 'IT'] },
-  { title: 'IoT Data Visualization', image: '/api/placeholder/600/400', tags: ['Data Science', 'IT'] },
-  { title: 'Construction Project Management', image: '/api/placeholder/600/400', tags: ['Web', 'Application', 'Construction'] },
-  { title: 'Hotel Booking System', image: '/api/placeholder/600/400', tags: ['Web', 'Mobile', 'Hospitality'] },
+  { title: 'E-commerce Platform', image: '/global/images/portfolio/product-1.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Web', 'E-commerce'] },
+  { title: 'Inventory Management System', image: '/global/images/portfolio/product-2.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Web', 'Application', 'IT'] },
+  { title: 'Mobile Banking App', image: '/global/images/portfolio/product-3.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Mobile', 'IT'] },
+  { title: 'Predictive Analytics Dashboard', image: '/global/images/portfolio/product-4.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Data Science', 'IT'] },
+  { title: 'AI-powered Chatbot', image: '/global/images/portfolio/product-5.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['AI', 'IT'] },
+  { title: 'Cloud Migration Service', image: '/global/images/portfolio/product-6.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Cloud Services', 'IT'] },
+  { title: 'Machine Learning Model for Finance', image: '/global/images/portfolio/product-7.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['AI', 'Data Science', 'IT'] },
+  { title: 'IoT Data Visualization', image: '/global/images/portfolio/product-8.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Data Science', 'IT'] },
+  { title: 'Construction Project Management', image: '/global/images/portfolio/product-9.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Web', 'Application', 'Construction'] },
+  { title: 'Hotel Booking System', image: '/global/images/portfolio/product-10.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Web', 'Mobile', 'Hospitality'] },
 ];
 
 const TabDropdown = ({ category, items, selectedItem, setSelectedItem }) => {
@@ -189,7 +190,9 @@ const Portfolio = () => {
                     className="w-full h-56 object-cover transform hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                    <span className="text-white text-lg font-semibold">View Project</span>
+                    <Link href={`${project.link}`} className="text-white text-lg font-semibold hover:underline">
+                      View Project
+                    </Link>
                   </div>
                 </div>
                 <div className="p-6">

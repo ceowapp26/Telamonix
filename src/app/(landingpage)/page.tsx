@@ -4,6 +4,7 @@ import $ from 'jquery';
 import Header from './_components/Header';
 import Hero from './_components/Hero';
 import Services from './_components/Services';
+import Techstack from './_components/Techstack';
 import Testimonials from './_components/Testimonials';
 import WhyChooseUs from './_components/WhyChooseUs';
 import Process from './_components/Process';
@@ -14,7 +15,7 @@ import Contact from './_components/Contact';
 import Footer from "@/components/footer";
 import AnimatedSection from './_components/AnimatedSection';
 import Navigation from './_components/Navigation';
-
+import Blog from './_components/Blog';
 
 const LandingPage = () => {
   const [activeSection, setActiveSection] = useState(1);
@@ -86,7 +87,9 @@ const LandingPage = () => {
     <React.Fragment>
       <Header />
       <main>
-        <Navigation activeSection={activeSection} handleSectionClick={handleSectionClick} isSticky={isSticky} isVisible={isVisible} />
+        <div className="flex items-center justify-center w-full">
+          <Navigation activeSection={activeSection} handleSectionClick={handleSectionClick} isSticky={isSticky} isVisible={isVisible} />
+        </div>
         <div ref={heroSectionRef}>
           <Hero />
         </div>
@@ -95,7 +98,10 @@ const LandingPage = () => {
             <Services />
           </div>
         </AnimatedSection>
-        <AnimatedSection animation="slideFromRight">
+        <div>
+          <Techstack />
+        </div>
+        <AnimatedSection animation="scale">
           <div ref={testimonialsSectionRef}>
             <Testimonials />
           </div>
@@ -128,6 +134,11 @@ const LandingPage = () => {
         <AnimatedSection animation="slideFromLeft">
           <div ref={contactSectionRef}>
             <Contact />
+          </div>
+        </AnimatedSection>
+         <AnimatedSection animation="fadeIn">
+          <div>
+            <Blog />
           </div>
         </AnimatedSection>
       </main>    
