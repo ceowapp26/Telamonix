@@ -14,7 +14,7 @@ const technologies = ["Web", "Mobile", "Application", "Data Science", "AI", "Clo
 const industries = ["IT", "Construction", "Hospitality", "E-commerce"];
 
 const projects = [
-  { title: 'E-commerce Platform', image: '/global/images/portfolio/product-1.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Web', 'E-commerce'] },
+  { title: 'E-commerce Platform', image: '/global/images/portfolio/product-1.png', link: 'https://wapp-pi.vercel.app', tags: ['Web', 'E-commerce'] },
   { title: 'Inventory Management System', image: '/global/images/portfolio/product-2.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Web', 'Application', 'IT'] },
   { title: 'Mobile Banking App', image: '/global/images/portfolio/product-3.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Mobile', 'IT'] },
   { title: 'Predictive Analytics Dashboard', image: '/global/images/portfolio/product-4.png', link: 'http://54.253.104.12:8000/AI.html/', tags: ['Data Science', 'IT'] },
