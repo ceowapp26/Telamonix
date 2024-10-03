@@ -18,7 +18,7 @@ const SocialLink = ({ href, network, bgColor }) => (
     whileHover={{ scale: 1.1 }}
     whileTap={{ scale: 0.95 }}
   >
-    <Link href={href} passHref>
+    <Link target="_blank" href={href} passHref>
       <motion.div
         className="inline-block w-12 h-12 rounded-full bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden"
         whileHover={{
@@ -33,6 +33,7 @@ const SocialLink = ({ href, network, bgColor }) => (
           style={{ backgroundColor: bgColor }}
         />
         <SocialIcon
+          target="_blank"          
           url={href}
           network={network}
           bgColor="transparent"
