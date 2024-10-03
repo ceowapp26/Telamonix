@@ -32,7 +32,7 @@ const CustomButton = ({ text = 'Explore', onClick }) => {
         />
         <motion.span
           className="relative z-10 flex items-center justify-between w-full"
-          initial={{ x: "50%" }}
+          initial={{ x: "55%" }}
           whileHover={{ x: "0%" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
@@ -87,7 +87,7 @@ const TypewriterEffect = ({ texts, speed = 50, delayBetweenTexts = 2000 }) => {
   }, [cursorControls]);
 
   return (
-    <div className="relative text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl tracking-wider">
+    <div className="relative top-4 bottom-2 text-white text-sm sm:text-base md:text-md lg:text-lg xl:text-xl tracking-wider">
       {displayedText.split('').map((char, i) => (
         <motion.span
           key={i}
@@ -99,7 +99,7 @@ const TypewriterEffect = ({ texts, speed = 50, delayBetweenTexts = 2000 }) => {
         </motion.span>
       ))}
       <motion.div
-        className="inline-block overflow-hidden absolute w-[2px] sm:w-[3px] h-[18px] sm:h-[24px] ml-1 bg-white"
+        className="inline-block overflow-hidden mt-0 absolute w-[2px] sm:w-[3px] h-[18px] sm:h-[24px] ml-1 bg-white"
         animate={cursorControls}
       />
     </div>
@@ -116,16 +116,16 @@ const HeroInfo = () => {
   ];
 
   const companyLogos = [
-    '/global/images/partner/logo_facebook.png',
-    '/global/images/partner/logo_google.png',
-    '/global/images/partner/logo_microsoft.png',
+    '/global/images/partner/google.png',
+    '/global/images/partner/microsoft.png',
+    '/global/images/partner/clerk.png',
   ];
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="h-screen bg-[#0a0118]">
         <div className="absolute top-[10%] sm:top-[15%] md:top-[20%] left-0 sm:left-[8%] pointer-events-none w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] z-50">
-          <div className="relative w-full h-[202px] mb-[85px] bg-hero-background-top bg-no-repeat bg-contain">
+          <div className="relative w-full h-[202px] mb-[85px] left-1/5 bg-hero-background-top bg-no-repeat bg-contain">
             <div 
               className="w-full h-full absolute top-0 left-0 mix-blend-overlay bg-no-repeat bg-contain"
               style={{ 
@@ -176,74 +176,90 @@ const HeroInfo = () => {
               <div></div>
             </div>
           </div>
-          <div className="absolute top-[15%] left-0 xl:left-[8%] flex flex-col justify-center w-full xl:w-1/2 mx-0 h-[30%] px-3">
-            <div className="flex">
-              <div className="w-1/2">
-                <h2 className="text-2xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">Telamonix <span>provide solutions for</span></h2>
+
+          <div className="absolute -top-14 left-0 xl:left-[5%] flex flex-col justify-center w-full xl:w-1/2 mx-0 px-3">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-3xl"
+            >
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+                  Telamonix provides solutions for
+                </span>
+              </h2>
+              <div className="relative max-h-16 sm:h-20 overflow-hidden">
+                <motion.div 
+                  animate={{ y: [0, -80, -160, -240, 0] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  className="whitespace-nowrap text-xl sm:text-2xl lg:text-3xl font-bold"
+                >
+                  <div className="h-16 sm:h-20 flex items-center bg-gradient-to-r from-red-500 via-orange-500 to-purple-600 text-transparent bg-clip-text">INDIVIDUALS</div>
+                  <div className="h-16 sm:h-20 flex items-center bg-gradient-to-r from-red-500 via-orange-500 to-purple-600 text-transparent bg-clip-text">STARTUPS</div>
+                  <div className="h-16 sm:h-20 flex items-center bg-gradient-to-r from-red-500 via-orange-500 to-purple-600 text-transparent bg-clip-text">BUSINESSES</div>
+                  <div className="h-16 sm:h-20 flex items-center bg-gradient-to-r from-red-500 via-orange-500 to-purple-600 text-transparent bg-clip-text">ENTERPRISES</div>
+                </motion.div>
               </div>
-              <div className="flex justify-center items-center w-full">
-                <b className="relative h-[50px] float-left top-0 overflow-hidden">
-                  <div className="relative inline-block whitespace-nowrap text-transparent bg-gradient-to-r from-red-500 via-orange-500 to-purple-600 bg-clip-text animate-gradient bg-[200%_200%] text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl px-1 animate-moveTxt">
-                    INDIVIDUALS<br />
-                    STARTUPS<br />
-                    ENTERPRICES
-                  </div>
-                </b>
+              <div className="mb-8">
+                <TypewriterEffect 
+                  texts={[
+                    "Telamonix provides optimal solutions to your problems.",
+                    "We transform ideas into reality.",
+                    "Innovate, Create, Succeed with Telamonix."
+                  ]} 
+                  speed={50} 
+                  delayBetweenTexts={2000}
+                />
               </div>
-            </div>
-            <hr className="w-full h-full flex" />
-            <div className="relative w-full h-full py-4 sm:py-6 md:py-8 lg:py-10">
-              <TypewriterEffect 
-                texts={[
-                  "Telamonix provides optimal solutions to your problems.",
-                  "We transform ideas into reality.",
-                  "Innovate, Create, Succeed with Telamonix."
-                ]} 
-                speed={50} 
-                delayBetweenTexts={2000}
-              />
-            </div>
-            <div className="mt-4 sm:mt-6 md:mt-8">
-              <h3 className="text-white text-sm sm:text-base md:text-lg">Partnered With</h3>
-              <div className="mt-2 sm:mt-4 overflow-hidden">
-                <div className="flex animate-marquee max-w-[200px] sm:max-w-[250px]">
+
+              <div className="mb-8">
+                <h3 className="text-white text-xl font-semibold mb-4">Partnered With</h3>
+                <div className="flex space-x-6 overflow-x-auto">
                   {companyLogos.map((logo, index) => (
-                    <Image
+                    <motion.div
                       key={index}
-                      src={logo}
-                      alt={`Company Logo ${index + 1}`}
-                      width={24} 
-                      height={24}
-                      className="mx-2 sm:mx-4"
-                    />
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Image
+                        src={logo}
+                        alt={`Company Logo ${index + 1}`}
+                        width={56} 
+                        height={56}
+                        className="filter transition-all duration-300"
+                      />
+                    </motion.div>
                   ))}
                 </div>
               </div>
-            </div>
-            <div className="flex justify-between mt-4 sm:mt-6 md:mt-8">
-              <div className="text-center">
-                <h4 className="text-white text-xs sm:text-sm md:text-base">Projects</h4>
-                <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">50+</div>
+
+              <div className="grid grid-cols-3 gap-8 mb-8">
+                {[
+                  { label: "Projects", value: "50+" },
+                  { label: "Experience", value: "5+" },
+                  { label: "Rating", value: "5" }
+                ].map((item, index) => (
+                  <motion.div 
+                    key={index}
+                    whileHover={{ scale: 1.05 }}
+                    className="text-center p-4 bg-white bg-opacity-10 rounded-lg backdrop-filter backdrop-blur-lg"
+                  >
+                    <h4 className="text-sm uppercase mb-2 text-white/80">{item.label}</h4>
+                    <div className="text-3xl font-bold text-blue-400">{item.value}</div>
+                  </motion.div>
+                ))}
               </div>
-              <div className="text-center">
-                <h4 className="text-white text-xs sm:text-sm md:text-base">Experience</h4>
-                <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">5+</div>
+              <div className="relative mt-4 sm:mt-6 md:mt-8 pointer-events-auto cursor-pointer">
+                <CustomButton text="Get In Touch" />
               </div>
-              <div className="text-center">
-                <h4 className="text-white text-xs sm:text-sm md:text-base">Rating</h4>
-                <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">5</div>
-              </div>
-            </div>
-            <div className="relative mt-4 sm:mt-6 md:mt-8 pointer-events-auto cursor-pointer">
-              <CustomButton text="Booking" />
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 const Hero = () => {
   const headingRef = useRef();
@@ -258,7 +274,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative w-full h-full bg-black rounded-b-3xl overflow-hidden">
+    <section className="relative w-full h-full bg-[#0a0118] rounded-b-3xl overflow-hidden">
       <div className="container mx-auto px-0 xl:px-4">
         <div className="flex flex-col xl:flex-row min-h-screen h-full">
           <div className="w-full flex xl:w-1/2 py-8 xl:py-0">
@@ -306,7 +322,7 @@ const Ball = ({ texture, name, text, position }) => {
         />
         <Decal
           position={[0, 0, 1]}
-          rotation={[2 * Math.PI, 0, 6.25]}
+          rotation={[-2*Math.PI, 0, 6.25]}
           scale={2}
           map={decal}
         />
@@ -321,7 +337,7 @@ const Cloud = ({ technologies }) => {
     return technologies.map(() => {
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
-      const radius = 1.75 + Math.random() * 2;
+      const radius = 1.8 + Math.random() * 2;
       return new THREE.Vector3(
         radius * Math.sin(phi) * Math.cos(theta),
         radius * Math.sin(phi) * Math.sin(theta) + 3,
@@ -331,7 +347,7 @@ const Cloud = ({ technologies }) => {
   }, [technologies]);
 
   const targetX = 3;
-  const startX = 0;
+  const startX = 0.5;
   const animationDuration = 2; // Duration in seconds
   const startTime = useRef(null);
 
@@ -374,8 +390,7 @@ const Scene = () => {
   });
 
   return (
-    <group ref={groupRef} position={[8, -5, -10.5]} scale={1.2} rotation={[0, -Math.PI / 4, 0]}>
-      <FloatLaptop />
+    <group ref={groupRef} position={[9.5, -5, -9.5]} scale={1.2} rotation={[0, -Math.PI / 3, 0]}>
       <Cloud technologies={technologies} />
     </group>
   );
@@ -385,13 +400,16 @@ const HeroScene = () => {
   return (
     <Canvas 
       camera={{ position: [0, 0, 20], fov: 55 }}
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-      gl={{ alpha: true, antialias: true }}
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}
+      gl={{ alpha: true, antialias: true, preserveDrawingBuffer: true }}
     >
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <React.Suspense fallback={null}>
         <Scene />
+        <group position={[16, -6, -37.5]} scale={1.2} rotation={[0, -Math.PI / 4, 0]}>
+          <FloatLaptop />
+        </group>
         <Environment preset="city" />
       </React.Suspense>
       <ContactShadows position={[0, -4.5, 0]} scale={20} blur={2} far={4.5} />

@@ -51,11 +51,11 @@ const SocialLinks = () => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, staggerChildren: 0.1 }}
   >
-    <SocialLink href="https://linkedin.com" network="linkedin" bgColor="#0077B5" />
-    <SocialLink href="https://github.com" network="github" bgColor="#333" />
-    <SocialLink href="https://facebook.com" network="facebook" bgColor="#1877F2" />
-    <SocialLink href="https://youtube.com" network="youtube" bgColor="#FF0000" />
-    <SocialLink href="https://twitter.com" network="twitter" bgColor="#1DA1F2" />
+    <SocialLink href="https://www.linkedin.com/in/nguyen-dat-5b1812324/" network="linkedin" bgColor="#0077B5" />
+    <SocialLink href="https://github.com/ceowapp" network="github" bgColor="#333" />
+    <SocialLink href="https://www.facebook.com/people/WApp-Inc/61564944704482/" network="facebook" bgColor="#1877F2" />
+    <SocialLink href="https://www.youtube.com/@wappadmin-k3q" network="youtube" bgColor="#FF0000" />
+    <SocialLink href="https://x.com/ceowapp" network="twitter" bgColor="#1DA1F2" />
   </motion.div>
 );
 

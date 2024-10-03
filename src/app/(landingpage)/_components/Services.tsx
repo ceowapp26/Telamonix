@@ -2,6 +2,8 @@ import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Code, Smartphone, Database, Zap, Building2, Workflow, Brain, Wifi, Gamepad2, Bitcoin, QrCode } from 'lucide-react';
 import { BsHeadsetVr } from 'react-icons/bs';
+import PDFContainer from './PDFContainer';
+import { useInView } from 'react-intersection-observer';
 import { Card, CardHeader, CardBody, CardFooter, Image, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Tabs, Tab } from "@nextui-org/react";
 
 const services = [
@@ -20,146 +22,732 @@ const services = [
 ];
 
 const ServiceContent = memo(({ serviceId }) => {
+  const [activeTab, setActiveTab] = useState('overview');
+
   const contentMap = {
     web: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-bold">Web App Development</h3>
-        <p>Our web application development service delivers cutting-edge, responsive, and scalable solutions tailored to your unique business needs. We leverage the latest technologies and best practices to create powerful, user-friendly web applications that drive growth and enhance user engagement.</p>
-        <Tabs aria-label="Web App Development Features">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-6"
+      >
+        <motion.h3 
+          className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Web App Development
+        </motion.h3>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-lg leading-relaxed"
+        >
+          Our web application development service delivers cutting-edge, responsive, and scalable solutions tailored to your unique business needs. We leverage the latest technologies and best practices to create powerful, user-friendly web applications that drive growth and enhance user engagement.
+        </motion.p>
+        <Tabs 
+          aria-label="Web App Development Features" 
+          color="primary" 
+          variant="underlined"
+          selectedKey={activeTab}
+          onSelectionChange={setActiveTab}
+          className="mt-6"
+        >
           <Tab key="frontend" title="Frontend">
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Responsive design for seamless experiences across all devices</li>
-              <li>Modern frameworks like React, Vue, or Angular for dynamic UIs</li>
-              <li>Progressive Web App (PWA) capabilities for offline functionality</li>
-              <li>Accessibility compliance (WCAG) for inclusive design</li>
-            </ul>
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="frontend"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Responsive design for seamless experiences across all devices</li>
+                <li>Modern frameworks like React, Vue, or Angular for dynamic UIs</li>
+                <li>Progressive Web App (PWA) capabilities for offline functionality</li>
+                <li>Accessibility compliance (WCAG) for inclusive design</li>
+              </motion.ul>
+            </AnimatePresence>
           </Tab>
           <Tab key="backend" title="Backend">
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Scalable server-side architectures using Node.js, Python, or Java</li>
-              <li>RESTful API design and implementation</li>
-              <li>Database integration (SQL and NoSQL solutions)</li>
-              <li>Cloud deployment and serverless computing options</li>
-            </ul>
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="backend"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Scalable server-side architectures using Node.js, Python, or Java</li>
+                <li>RESTful API design and implementation</li>
+                <li>Database integration (SQL and NoSQL solutions)</li>
+                <li>Cloud deployment and serverless computing options</li>
+              </motion.ul>
+            </AnimatePresence>
           </Tab>
           <Tab key="features" title="Key Features">
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Single Page Application (SPA) development for smooth user experiences</li>
-              <li>Real-time data synchronization and WebSocket integration</li>
-              <li>Third-party API integrations for extended functionality</li>
-              <li>Robust security measures including encryption and authentication</li>
-            </ul>
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="features"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Single Page Application (SPA) development for smooth user experiences</li>
+                <li>Real-time data synchronization and WebSocket integration</li>
+                <li>Third-party API integrations for extended functionality</li>
+                <li>Robust security measures including encryption and authentication</li>
+              </motion.ul>
+            </AnimatePresence>
           </Tab>
         </Tabs>
-        <div className="mt-6">
-          <h4 className="text-xl font-semibold mb-2">Our Web App Development Process</h4>
+        <motion.div
+          className="mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <h4 className="text-2xl font-semibold mb-4">Our Web App Development Process</h4>
           <ol className="list-decimal pl-5 space-y-2">
-            <li>Requirements gathering and analysis</li>
-            <li>UI/UX design and prototyping</li>
-            <li>Frontend and backend development</li>
-            <li>Quality assurance and testing</li>
-            <li>Deployment and ongoing support</li>
+            {[
+              "Requirements gathering and analysis",
+              "UI/UX design and prototyping",
+              "Frontend and backend development",
+              "Quality assurance and testing",
+              "Deployment and ongoing support"
+            ].map((step, index) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                {step}
+              </motion.li>
+            ))}
           </ol>
-        </div>
-        <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-lg">
-          <h4 className="text-lg font-semibold mb-2">Why Choose Us for Web App Development?</h4>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>Expertise in latest web technologies and frameworks</li>
-            <li>Focus on scalable, maintainable, and performant code</li>
-            <li>User-centric design approach for maximum engagement</li>
-            <li>Agile development methodology for flexibility and faster time-to-market</li>
-            <li>Comprehensive testing and quality assurance processes</li>
-          </ul>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     ),
     mobile: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-bold">Mobile App Development</h3>
-        <p>Our mobile app development service creates innovative, high-performance applications for iOS and Android platforms. We focus on delivering intuitive user experiences, robust functionality, and seamless integration with device features to ensure your app stands out in the competitive mobile landscape.</p>
-        <Tabs aria-label="Mobile App Development Options">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-6"
+      >
+        <motion.h3 
+          className="text-3xl font-bold bg-gradient-to-r from-green-500 to-blue-600 bg-clip-text text-transparent"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Mobile App Development
+        </motion.h3>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-lg leading-relaxed"
+        >
+          Our mobile app development service creates innovative, high-performance applications for iOS and Android platforms. We focus on delivering intuitive user experiences, robust functionality, and seamless integration with device features to ensure your app stands out in the competitive mobile landscape.
+        </motion.p>
+        <Tabs
+          aria-label="Mobile App Development Options"
+          color="primary"
+          variant="underlined"
+          selectedKey={activeTab}
+          onSelectionChange={setActiveTab}
+          className="mt-6"
+        >
           <Tab key="native" title="Native Apps">
-            <ul className="list-disc pl-5 space-y-2">
-              <li>iOS development using Swift and SwiftUI</li>
-              <li>Android development with Kotlin and Jetpack Compose</li>
-              <li>Optimized performance and native UI components</li>
-              <li>Full access to device features and APIs</li>
-            </ul>
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="native"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>iOS development using Swift and SwiftUI</li>
+                <li>Android development with Kotlin and Jetpack Compose</li>
+                <li>Optimized performance and native UI components</li>
+                <li>Full access to device features and APIs</li>
+              </motion.ul>
+            </AnimatePresence>
           </Tab>
           <Tab key="cross-platform" title="Cross-Platform">
-            <ul className="list-disc pl-5 space-y-2">
-              <li>React Native for code reusability across platforms</li>
-              <li>Flutter for beautiful, natively compiled applications</li>
-              <li>Xamarin for .NET and C# based cross-platform development</li>
-              <li>Efficient development process with shared codebase</li>
-            </ul>
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="cross-platform"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>React Native for code reusability across platforms</li>
+                <li>Flutter for beautiful, natively compiled applications</li>
+                <li>Xamarin for .NET and C# based cross-platform development</li>
+                <li>Efficient development process with shared codebase</li>
+              </motion.ul>
+            </AnimatePresence>
           </Tab>
           <Tab key="features" title="Key Features">
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Offline functionality and data synchronization</li>
-              <li>Push notifications and real-time updates</li>
-              <li>Integration with device features (camera, GPS, sensors)</li>
-              <li>Secure authentication and data encryption</li>
-            </ul>
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="features"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Offline functionality and data synchronization</li>
+                <li>Push notifications and real-time updates</li>
+                <li>Integration with device features (camera, GPS, sensors)</li>
+                <li>Secure authentication and data encryption</li>
+              </motion.ul>
+            </AnimatePresence>
           </Tab>
         </Tabs>
-        <div className="mt-6">
-          <h4 className="text-xl font-semibold mb-2">Our Mobile App Development Process</h4>
-          <ol className="list-decimal pl-5 space-y-2">
-            <li>Market research and concept validation</li>
-            <li>UI/UX design and prototyping</li>
-            <li>App development and integration</li>
-            <li>Thorough testing on multiple devices</li>
-            <li>App store submission and launch</li>
-            <li>Ongoing maintenance and updates</li>
-          </ol>
-        </div>
-        <div className="bg-green-100 dark:bg-green-900 p-4 rounded-lg">
-          <h4 className="text-lg font-semibold mb-2">Why Choose Us for Mobile App Development?</h4>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>Expertise in both native and cross-platform development</li>
-            <li>Focus on creating engaging and intuitive user experiences</li>
-            <li>Rigorous testing processes to ensure app stability and performance</li>
-            <li>Experience with app store guidelines and submission processes</li>
-            <li>Ongoing support and maintenance to keep your app up-to-date</li>
-          </ul>
-        </div>
-      </div>
+      </motion.div>
     ),
-  };
+    data: (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-6"
+      >
+        <motion.h3 
+          className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-red-600 bg-clip-text text-transparent"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Data Analytics
+        </motion.h3>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-lg leading-relaxed"
+        >
+          Our data analytics service helps you unlock valuable insights from your data, enabling informed decision-making and strategic planning. We employ advanced analytics techniques and cutting-edge tools to transform raw data into actionable intelligence.
+        </motion.p>
+        <div className="relative aspect-video rounded-lg overflow-hidden">
+          <iframe
+            src="https://www.youtube.com/embed/KOwu8sML2dQ?si=alHltttBT77Za5Ct"
+            title="BIM Technology Overview"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute top-0 left-0 w-full h-full"
+          />
+        </div>
+        <Tabs
+          aria-label="Data Analytics Services"
+          color="primary"
+          variant="underlined"
+          selectedKey={activeTab}
+          onSelectionChange={setActiveTab}
+          className="mt-6"
+        >
+          <Tab key="descriptive" title="Descriptive Analytics">
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="descriptive"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Historical data analysis and reporting</li>
+                <li>Data visualization and dashboard creation</li>
+                <li>KPI tracking and performance metrics</li>
+                <li>Trend identification and pattern recognition</li>
+              </motion.ul>
+            </AnimatePresence>
+          </Tab>
+          <Tab key="predictive" title="Predictive Analytics">
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="predictive"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Machine learning models for forecasting</li>
+                <li>Customer behavior prediction</li>
+                <li>Risk assessment and fraud detection</li>
+                <li>Demand forecasting and inventory optimization</li>
+              </motion.ul>
+            </AnimatePresence>
+          </Tab>
+          <Tab key="prescriptive" title="Prescriptive Analytics">
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="prescriptive"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Optimization algorithms for decision-making</li>
+                <li>Scenario analysis and simulation</li>
+                <li>Recommendation systems</li>
+                <li>Automated decision support systems</li>
+              </motion.ul>
+            </AnimatePresence>
+          </Tab>
+        </Tabs>
+      </motion.div>
+    ),
+    automation: (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-6"
+      >
+        <motion.h3 
+          className="text-3xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Business Automation
+        </motion.h3>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-lg leading-relaxed"
+        >
+          Our business automation services streamline your operations, increase efficiency, and reduce manual tasks. We implement intelligent automation solutions that transform your business processes and drive productivity.
+        </motion.p>
+        <Tabs
+          aria-label="Business Automation Services"
+          color="primary"
+          variant="underlined"
+          selectedKey={activeTab}
+          onSelectionChange={setActiveTab}
+          className="mt-6"
+        >
+          <Tab key="rpa" title="Robotic Process Automation (RPA)">
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="rpa"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Automated data entry and processing</li>
+                <li>Workflow automation for repetitive tasks</li>
+                <li>Integration with existing systems and applications</li>
+                <li>Scalable RPA solutions for enterprise-wide deployment</li>
+              </motion.ul>
+            </AnimatePresence>
+          </Tab>
+          <Tab key="bpm" title="Business Process Management (BPM)">
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key="bpm"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="list-disc pl-5 space-y-2 mt-4"
+              >
+                <li>Process modeling and optimization</li>
+                <li>Workflow design and implementation</li>
+                <li>Business rules engine integration</li>
+                <li>Performance monitoring and analytics</li>
+              </motion.ul>
+            </AnimatePresence>
+          </Tab>
+        <Tab key="ai" title="AI-powered Automation">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="ai"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>Machine learning for intelligent process automation</li>
+              <li>Natural Language Processing for document analysis</li>
+              <li>Predictive maintenance and anomaly detection</li>
+              <li>Cognitive automation for complex decision-making</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+      </Tabs>
+    </motion.div>
+  ),
+  bim: (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="space-y-6"
+    >
+      <motion.h3 
+        className="text-3xl font-bold bg-gradient-to-r from-green-500 to-teal-600 bg-clip-text text-transparent"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        BIM Technology
+      </motion.h3>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="text-lg leading-relaxed"
+      >
+        Our Building Information Modeling (BIM) technology services revolutionize the architecture, engineering, and construction industries. We provide cutting-edge BIM solutions that enhance collaboration, improve efficiency, and reduce costs throughout the building lifecycle.
+      </motion.p>
+      <div className="relative aspect-video rounded-lg overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/MQCPO48Wkak?si=ZplLVjafORNRlkFr"
+          title="BIM Technology Overview"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="absolute top-0 left-0 w-full h-full"
+        />
+      </div>
+      <Tabs
+        aria-label="BIM Technology Services"
+        color="primary"
+        variant="underlined"
+        selectedKey={activeTab}
+        onSelectionChange={setActiveTab}
+        className="mt-6"
+      >
+        <Tab key="modeling" title="3D Modeling">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="modeling"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>Detailed 3D modeling of buildings and infrastructure</li>
+              <li>Parametric modeling for easy modifications</li>
+              <li>Clash detection and resolution</li>
+              <li>Integration of MEP systems in the model</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+        <Tab key="collaboration" title="Collaboration">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="collaboration"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>Cloud-based BIM collaboration platforms</li>
+              <li>Real-time model sharing and updates</li>
+              <li>Version control and change management</li>
+              <li>Role-based access control for team members</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+        <Tab key="analysis" title="Analysis & Simulation">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="analysis"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>Energy performance analysis</li>
+              <li>Structural analysis and simulation</li>
+              <li>Daylight and solar studies</li>
+              <li>Cost estimation and quantity takeoffs</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+      </Tabs>
+      <PDFContainer pdfUrl="/global/pdfs/OUR_BIM_TEAM.pdf" />
+    </motion.div>
+  ),
+  api: (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="space-y-6"
+    >
+      <motion.h3 
+        className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        API Integration
+      </motion.h3>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="text-lg leading-relaxed"
+      >
+        Our API integration services enable seamless connectivity between different systems and applications. We design, implement, and manage robust API solutions that facilitate data exchange, enhance functionality, and drive digital transformation.
+      </motion.p>
+      <Tabs
+        aria-label="API Integration Services"
+        color="primary"
+        variant="underlined"
+        selectedKey={activeTab}
+        onSelectionChange={setActiveTab}
+        className="mt-6"
+      >
+        <Tab key="design" title="API Design">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="design"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>RESTful and GraphQL API design</li>
+              <li>API versioning and documentation</li>
+              <li>Security and authentication protocols</li>
+              <li>Performance optimization for high-load APIs</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+        <Tab key="development" title="API Development">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="development"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>Custom API development for various platforms</li>
+              <li>Microservices architecture implementation</li>
+              <li>API testing and quality assurance</li>
+              <li>Continuous integration and deployment (CI/CD) for APIs</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+        <Tab key="management" title="API Management">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="management"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>API gateway implementation</li>
+              <li>Traffic management and rate limiting</li>
+              <li>Analytics and monitoring for API usage</li>
+              <li>Developer portal for API documentation and testing</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+      </Tabs>
+    </motion.div>
+  ),
+
+  vr: (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="space-y-6"
+    >
+      <motion.h3 
+        className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-pink-600 bg-clip-text text-transparent"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        VR & AR
+      </motion.h3>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="text-lg leading-relaxed"
+      >
+        Our Virtual Reality (VR) and Augmented Reality (AR) services create immersive and interactive experiences that revolutionize various industries. From entertainment to education and training, we leverage cutting-edge VR and AR technologies to bring your ideas to life.
+      </motion.p>
+      <Tabs
+        aria-label="VR & AR Services"
+        color="primary"
+        variant="underlined"
+        selectedKey={activeTab}
+        onSelectionChange={setActiveTab}
+        className="mt-6"
+      >
+        <Tab key="vr" title="Virtual Reality">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="vr"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>Immersive VR experiences for various platforms</li>
+              <li>360-degree video production and integration</li>
+              <li>VR training simulations for industries</li>
+              <li>Virtual showrooms and product demonstrations</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+        <Tab key="ar" title="Augmented Reality">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="ar"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>AR mobile applications development</li>
+              <li>AR for marketing and advertising campaigns</li>
+              <li>Industrial AR solutions for maintenance and repair</li>
+              <li>AR-enhanced educational content</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+        <Tab key="mixed" title="Mixed Reality">
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key="mixed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="list-disc pl-5 space-y-2 mt-4"
+            >
+              <li>Development for Microsoft HoloLens and similar devices</li>
+              <li>Interactive 3D holographic experiences</li>
+              <li>Spatial computing applications</li>
+              <li>Collaborative mixed reality environments</li>
+            </motion.ul>
+          </AnimatePresence>
+        </Tab>
+      </Tabs>
+    </motion.div>
+  ),
+};
 
   return contentMap[serviceId] || <div>Content not available</div>;
 });
 
 const ServiceCard = ({ service, index }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
+
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
   return (
     <>
       <motion.div
+        ref={ref}
         initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.1 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
       >
-        <Card isPressable onPress={handleOpen} className="w-full h-[300px]">
-          <CardHeader className="absolute z-10 top-1 flex-col items-start">
-            <p className="text-tiny text-white/60 uppercase font-bold">{service.title}</p>
-            <h4 className="text-white/90 font-medium text-xl">{service.description}</h4>
+        <Card
+          isPressable
+          onPress={handleOpen}
+          className="w-full h-[300px] group overflow-hidden cursor-pointer"
+        >
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 z-10"
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          />
+          <CardHeader className="absolute z-20 top-1 flex-col items-start">
+            <motion.p
+              className="text-tiny text-white/60 uppercase font-bold"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              {service.title}
+            </motion.p>
+            <motion.h4
+              className="text-white/90 font-medium text-xl text-start"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              {service.description}
+            </motion.h4>
           </CardHeader>
           <Image
             removeWrapper
             alt={service.title}
-            className="z-0 w-full h-full object-cover"
+            className="z-0 w-full h-full object-cover transition-transform opacity-60 duration-300 group-hover:scale-110"
             src={`/global/images/service/${service.id.toLowerCase().replace(/ /g, '-')}.png`}
           />
-          <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-            <div className="flex flex-grow gap-2 items-center">
+          <CardFooter className="absolute bottom-0 z-20 w-full bg-gradient-to-t from-black/80 to-transparent">
+            <motion.div
+              className="flex flex-grow gap-2 items-center"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+            >
               <service.icon className="w-10 h-11 text-white" />
               <p className="text-tiny text-white/60">Learn More</p>
-            </div>
-            <Button radius="full" size="sm" color="primary">Explore</Button>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
+              <Button
+                radius="full"
+                size="sm"
+                color="primary"
+                className="bg-white text-black hover:bg-primary hover:text-white transition-colors duration-300"
+              >
+                Explore
+              </Button>
+            </motion.div>
           </CardFooter>
         </Card>
       </motion.div>
@@ -328,5 +916,4 @@ const Services = () => {
 };
 
 export default Services;
-
 

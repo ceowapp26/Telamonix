@@ -80,7 +80,7 @@
 .hero-background-bottom {
     height: 530px;
     position: relative;
-    left: 0;
+    left: 20%;
     top: 150px;
     width: 100%;
     z-index: 55;
@@ -101,8 +101,6 @@
 .lazy-background-image {
     transition: 1s cubic-bezier(.6,.6,0,1) opacity;
 }
-
-
 
 .hero-background-bottom-line-animation, .hero-background-bottom-ray-animation {
     height: 179px;

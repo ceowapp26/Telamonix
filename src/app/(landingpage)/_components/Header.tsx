@@ -167,8 +167,8 @@ return (
         >
           Resources
         </MenuLink>
-        <Link href="/pricing" className="text-white text-center text-base font-medium leading-6 tracking-wide whitespace-nowrap transition-all duration-200">
-          Pricing
+        <Link href="/blogs" className="text-white text-center text-base font-medium leading-6 tracking-wide whitespace-nowrap transition-all duration-200">
+          News
         </Link>
         <div className="flex items-center">
           <ModeToggle />
@@ -205,8 +205,8 @@ return (
     </div>
     <div className={`${isOpen ? 'tablet:block' : 'hidden'} hidden relative h-screen w-full`}>
       <div className="px-2 pt-2 pb-3 sm:px-3">
-        <Link href="/pricing" className="dark:text-white text-black text-gray-800 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200">
-          Pricing
+        <Link href="/blogs" className="dark:text-white text-black text-gray-800 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200">
+          News
         </Link>
         <Link href="/features" className="dark:text-white text-black text-gray-800 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200">
           Features

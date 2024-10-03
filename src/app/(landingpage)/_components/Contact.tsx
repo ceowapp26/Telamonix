@@ -1330,10 +1330,6 @@ const Contact = () => {
             className="glass-block w-full xl:w-1/2 hidden xl:block" 
             style={{ 
               height: '100vh',
-              background: rightHovered 
-                ? 'linear-gradient(135deg, #1a202c 0%, #2d3748 100%)' 
-                : 'linear-gradient(135deg, #2d3748 0%, #4a5568 100%)',
-              transition: 'background 0.3s ease'
             }}
             onHoverStart={() => setLeftHovered(true)}
             onHoverEnd={() => setLeftHovered(false)}

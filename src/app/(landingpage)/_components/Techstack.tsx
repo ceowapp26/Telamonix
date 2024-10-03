@@ -20,15 +20,42 @@ const techStacks: TechStack[] = [
       { name: 'Dart', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" alt="Dart" /> },
     ],
     frameworks: [
-      { name: 'Native iOS Development', items: [] },
-      { name: 'Native Android Development', items: [] },
-      { name: 'React Native', items: [{ name: 'React', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" /> }] },
-      { name: 'Flutter', items: [] },
-      { name: 'Ionic', items: [
-        { name: 'Angular', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" alt="Angular" /> },
-        { name: 'HTML', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" /> },
-        { name: 'CSS', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" /> },
-      ] },
+      { 
+        name: 'Native iOS Development', 
+        items: [
+          { name: 'Swift', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="Swift" /> },
+          { name: 'Objective-C', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/objectivec/objectivec-plain.svg" alt="Objective-C" /> }
+        ] 
+      },
+      { 
+        name: 'Native Android Development', 
+        items: [
+          { name: 'Kotlin', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" alt="Kotlin" /> },
+          { name: 'Java', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" /> }
+        ] 
+      },
+      { 
+        name: 'React Native', 
+        items: [{ 
+          name: 'React', 
+          icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" /> 
+        }] 
+      },
+      { 
+        name: 'Flutter', 
+        items: [
+          { name: 'Dart', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" alt="Dart" /> },
+          { name: 'Flutter SDK', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter SDK" /> }
+        ]
+      },
+      { 
+        name: 'Ionic', 
+        items: [
+          { name: 'Angular', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" alt="Angular" /> },
+          { name: 'HTML', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" /> },
+          { name: 'CSS', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" /> },
+        ] 
+      }
     ],
     tools: [
       { name: 'Figma', icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" /> },

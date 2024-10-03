@@ -1,18 +1,32 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { motion, useAnimation, useInView } from 'framer-motion';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { TextPlugin } from 'gsap/TextPlugin';
+import {Avatar, AvatarGroup, AvatarIcon} from "@nextui-org/avatar";
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
 const testimonials = [
-  { name: 'John Doe', role: 'CEO, Tech Corp', quote: 'Their IT solutions transformed our business operations.', rating: 5, avatar: '/api/placeholder/80/80' },
-  { name: 'Jane Smith', role: 'CTO, Innovate Inc', quote: 'Exceptional service and cutting-edge technology.', rating: 4, avatar: '/api/placeholder/80/80' },
-  { name: 'Mike Johnson', role: 'Founder, StartUp', quote: 'They helped us scale our infrastructure seamlessly.', rating: 5, avatar: '/api/placeholder/80/80' },
-  { name: 'Emily Brown', role: 'COO, Global Solutions', quote: 'Their team expertise is unmatched in the industry.', rating: 5, avatar: '/api/placeholder/80/80' },
-  { name: 'Alex Lee', role: 'IT Director, Enterprise Co', quote: 'Reliable, innovative, and always ahead of the curve.', rating: 4, avatar: '/api/placeholder/80/80' },
-  { name: 'Sarah Chen', role: 'VP of Engineering, TechGiant', quote: 'Their solutions have consistently exceeded our expectations.', rating: 5, avatar: '/api/placeholder/80/80' },
+  { name: 'John Doe', role: 'CEO, Tech Corp', quote: 'Their IT solutions transformed our business operations.', rating: 5, avatar: '/global/images/avatar/john.png' },
+  { name: 'Jane Smith', role: 'CTO, Innovate Inc', quote: 'Exceptional service and cutting-edge technology.', rating: 4, avatar: '/global/images/avatar/jane.png' },
+  { name: 'Mike Johnson', role: 'Founder, StartUp', quote: 'They helped us scale our infrastructure seamlessly.', rating: 5, avatar: '/global/images/avatar/mike.png' },
+  { name: 'Emily Brown', role: 'COO, Global Solutions', quote: 'Their team expertise is unmatched in the industry.', rating: 5, avatar: '/global/images/avatar/emily.png' },
+  { name: 'Alex Lee', role: 'IT Director, Enterprise Co', quote: 'Reliable, innovative, and always ahead of the curve.', rating: 4, avatar: '/global/images/avatar/alex.png' },
+  { name: 'Sarah Chen', role: 'VP of Engineering, TechGiant', quote: 'Their solutions have consistently exceeded our expectations.', rating: 5, avatar: '/global/images/avatar/sarah.png' },
+  { name: 'David Wilson', role: 'CIO, MegaCorp', quote: 'Their cybersecurity measures are top-notch.', rating: 5, avatar: '/global/images/avatar/david.png' },
+  { name: 'Lisa Taylor', role: 'Head of IT, Global Bank', quote: `They've revolutionized our data management systems.`, rating: 4, avatar: '/global/images/avatar/lisa.png' },
+  { name: 'Robert Green', role: 'Tech Lead, E-commerce Giant', quote: 'Their cloud solutions have improved our efficiency tenfold.', rating: 5, avatar: '/global/images/avatar/robert.png' },
+  { name: 'Emma Davis', role: 'Founder, AI Startup', quote: 'Their AI integration services are second to none.', rating: 5, avatar: '/global/images/avatar/emma.png' },
+  { name: 'Chris Wong', role: 'CTO, FinTech Innovators', quote: `They've helped us stay ahead in a competitive market.`, rating: 4, avatar: '/global/images/avatar/chris.png' },
+  { name: 'Olivia Martinez', role: 'VP of Operations, Logistics Co', quote: 'Their IoT solutions have transformed our supply chain.', rating: 5, avatar: '/global/images/avatar/olivia.png' },
+];
+
+const testimonialGroups = [
+  testimonials.slice(0, 4),
+  testimonials.slice(4, 8),
+  testimonials.slice(8, 12)
 ];
 
 const TestimonialCard = ({ name, role, quote, avatar, rating }) => {
@@ -54,8 +68,8 @@ const TestimonialCard = ({ name, role, quote, avatar, rating }) => {
 
   return (
     <div ref={cardRef} className="group w-full sm:w-80 h-auto sm:h-96 bg-neutral-800 rounded-xl overflow-hidden cursor-pointer transition-all duration-500 relative perspective-1000">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div className="absolute inset-0 z-[9999]">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-purple-500/30 opacity-50 group-hover:opacity-20 transition-opacity duration-500"></div>
+        <div className="absolute inset-0 z-50">
           <div className="bg-transparent group-hover:scale-150 -top-8 -left-8 absolute shadow-yellow-800 shadow-inner rounded-full transition-all ease-in-out group-hover:duration-1000 duration-1000 w-48 h-48"></div>
           <div className="bg-transparent group-hover:scale-150 top-1 left-1 absolute shadow-red-800 shadow-inner rounded-full transition-all ease-in-out group-hover:duration-1000 duration-1000 w-32 h-32"></div>
           <div className="bg-transparent group-hover:scale-150 top-8 left-8 absolute shadow-sky-800 shadow-inner rounded-full transition-all ease-in-out group-hover:duration-1000 duration-1000 w-12 h-12"></div>
@@ -66,15 +80,8 @@ const TestimonialCard = ({ name, role, quote, avatar, rating }) => {
         </div>
       <div className="w-full h-full shadow-xl shadow-neutral-900/50 p-6 bg-neutral-900/80 backdrop-blur-sm rounded-2xl flex flex-col justify-between z-10 relative transform-style-3d group-hover:translate-z-10 transition-transform duration-500">
         <div>
-          <div className="flex items-center mb-4">
-            <Image 
-              src={avatar || "/api/placeholder/80/80"} 
-              alt={name} 
-              width={64}
-              height={64}
-              className="rounded-full mr-4 border-2 border-blue-500"
-              objectFit="cover"
-            />
+          <div className="flex items-center mb-4 z-[9999]">
+            <Avatar className="mr-4" size="lg" src={avatar} />
             <div>
               <h3 className="font-bold text-xl text-neutral-50">{name}</h3>
               <p className="text-sm text-blue-300">{role}</p>
@@ -108,42 +115,28 @@ const Testimonials = () => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
 
+  const isInView = useInView(containerRef, { once: false, amount: 0.2 });
+  const titleControls = useAnimation();
+  const subtitleControls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      titleControls.start('visible');
+      subtitleControls.start('visible');
+    } else {
+      titleControls.start('hidden');
+      subtitleControls.start('hidden');
+    }
+  }, [isInView, titleControls, subtitleControls]);
+
   useEffect(() => {
     const columns = columnRefs.current;
     const container = containerRef.current;
 
-    // Text animation for title and subtitle
-    gsap.from(titleRef.current, {
-      duration: 0.5,
-      opacity: 0,
-      y: 50,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: container,
-        start: 'top 80%',
-        end: 'top 20%',
-        toggleActions: 'play none none reverse',
-      }
-    });
-
-    gsap.from(subtitleRef.current.children, {
-      duration: 1,
-      opacity: 0,
-      y: 20,
-      stagger: 0.1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: container,
-        start: 'top 60%',
-        end: 'top 50%',
-        toggleActions: 'play none none reverse',
-      }
-    });
-
     // Scrolling animation for testimonial cards
     const scrollAnimations = columns.map((column, index) => {
       return gsap.to(column.children, {
-        y: index % 2 === 0 ? '-50%' : '50%',
+        y: index % 2 === 0 ? '-20%' : '20%',
         ease: 'none',
         scrollTrigger: {
           trigger: container,
@@ -156,7 +149,7 @@ const Testimonials = () => {
 
     // Parallax effect for background elements
     gsap.to('.parallax-bg', {
-      y: '30%',
+      y: '100%',
       ease: 'none',
       scrollTrigger: {
         trigger: container,
@@ -171,36 +164,77 @@ const Testimonials = () => {
     };
   }, []);
 
+  const titleVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.6, -0.05, 0.01, 0.99],
+      },
+    },
+  };
+
+  const subtitleVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.6, -0.05, 0.01, 0.99],
+      },
+    },
+  };
+
   return (
-    <section ref={containerRef} className="py-32 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 overflow-hidden relative">
+    <section ref={containerRef} className="testimonial py-32 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 overflow-hidden relative">
       <div className="parallax-bg absolute inset-0 opacity-20">
         <div className="stars"></div>
         <div className="twinkling"></div>
       </div>
       <div className="container mx-auto px-4 relative z-[50]">
-        <h2 
-          ref={titleRef} 
+        <motion.h2 
+          ref={titleRef}
+          variants={titleVariants}
+          initial="hidden"
+          animate={titleControls}
           className="text-6xl sm:text-7xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-indigo-300 to-purple-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]"
         >
           What Our Clients Say
-        </h2>
-        <p 
-          ref={subtitleRef} 
-          className="text-2xl sm:text-3xl font-light text-center mb-20 mt-8 text-blue-200 drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]"
+        </motion.h2>
+        <motion.p 
+          ref={subtitleRef}
+          variants={subtitleVariants}
+          initial="hidden"
+          animate={subtitleControls}
+          className="text-2xl sm:text-3xl font-semibold text-center mb-20 mt-8 text-blue-200 drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]"
         >
-          <span className="inline-block px-2">Trusted by</span>
-          <span className="inline-block px-2">industry leaders</span>
-          <span className="inline-block px-2">worldwide</span>
-        </p>
+          <motion.span variants={wordVariants} className="inline-block px-2">Trusted by</motion.span>
+          <motion.span variants={wordVariants} className="inline-block px-2">industry leaders</motion.span>
+          <motion.span variants={wordVariants} className="inline-block px-2">worldwide</motion.span>
+        </motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[0, 1, 2].map((colIndex) => (
+          {testimonialGroups.map((group, colIndex) => (
             <div
               key={colIndex}
               ref={(el) => (columnRefs.current[colIndex] = el)}
               className="flex flex-col space-y-8 overflow-hidden"
             >
-              {testimonials.map((testimonial, index) => (
-                <TestimonialCard key={index} {...testimonial} />
+              {group.map((testimonial, index) => (
+                <TestimonialCard key={`${colIndex}-${index}`} {...testimonial} />
               ))}
             </div>
           ))}
@@ -211,3 +245,4 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+

@@ -25,7 +25,7 @@ export default function FloatLaptop(props) {
           <mesh material={materials['matte.001']} geometry={nodes['Cube008_1'].geometry} />
           <mesh geometry={nodes['Cube008_2'].geometry}>
             {/* Drei's HTML component can "hide behind" canvas geometry */}
-            <Html className="content" rotation-x={-Math.PI / 2} position={[0, 0.05, -0.09]} transform occlude>
+            <Html className="content" rotation-x={-Math.PI / 2} position={[-0.3, 0.05, -0.09]} transform occlude>
               <div className="wrapper bg-violet-500/75" onPointerDown={(e) => e.stopPropagation()}>
                 <DemoPage />
               </div>

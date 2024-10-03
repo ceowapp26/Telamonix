@@ -23,6 +23,7 @@ const LandingPage = () => {
   const [isVisible, setIsVisible] = useState(true);
   const heroSectionRef = useRef(null);
   const servicesSectionRef = useRef(null);
+  const techstackSectionRef = useRef(null);
   const testimonialsSectionRef = useRef(null);
   const whychooseusSectionRef = useRef(null);
   const processSectionRef = useRef(null);
@@ -30,17 +31,22 @@ const LandingPage = () => {
   const calltoactionSectionRef = useRef(null);
   const faqSectionRef = useRef(null);
   const contactSectionRef = useRef(null);
+  const blogSectionRef = useRef(null);
+  const footerSectionRef = useRef(null);
 
   const refs = [
     heroSectionRef,
     servicesSectionRef,
+    techstackSectionRef,
     testimonialsSectionRef,
     whychooseusSectionRef,
     processSectionRef,
     portfolioSectionRef,
     calltoactionSectionRef,
     faqSectionRef,
-    contactSectionRef
+    contactSectionRef,
+    blogSectionRef,
+    footerSectionRef
   ];
 
   const handleSectionClick = (section) => {
@@ -98,7 +104,7 @@ const LandingPage = () => {
             <Services />
           </div>
         </AnimatedSection>
-        <div>
+        <div ref={techstackSectionRef}>
           <Techstack />
         </div>
         <AnimatedSection animation="scale">
@@ -137,12 +143,14 @@ const LandingPage = () => {
           </div>
         </AnimatedSection>
          <AnimatedSection animation="fadeIn">
-          <div>
+          <div ref={blogSectionRef}>
             <Blog />
           </div>
         </AnimatedSection>
-      </main>    
-      <Footer />
+      </main> 
+      <div ref={footerSectionRef}>
+        <Footer />
+      </div>   
     </React.Fragment>
   );
 };

@@ -41,7 +41,7 @@ export const technologies = [
   },
   {
     name: "CSS 3",
-    texture: "/global/svgs/technologies/react.png",
+    texture: "/global/svgs/technologies/figma.png",
     text: "We use HTML for all projects"
   },
   {
@@ -61,7 +61,7 @@ export const technologies = [
   },
   {
     name: "CSS 3",
-    texture: "/global/svgs/technologies/react.png",
+    texture: "/global/svgs/technologies/angular.png",
     text: "We use HTML for all projects"
   },
   {
