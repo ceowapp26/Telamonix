@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo, useRef, Suspense } from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { Grid, Typography, Container, Box, InputAdornment, TextField } from '@mui/material';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useGSAP } from "@gsap/react";
 import { Decal, Float, OrbitControls, Preload, useTexture, Text, Billboard, Sphere, MeshDistortMaterial, useGLTF, Environment, ContactShadows } from '@react-three/drei';
 import { Center, Instance, Instances } from "@react-three/drei";
@@ -12,6 +12,78 @@ import * as THREE from "three";
 import { CustomMaterial } from "./material";
 import { Canvas } from '@react-three/fiber';
 import SearchIcon from '@mui/icons-material/Search';
+import { ChevronDown, ChevronUp } from 'react-feather'; 
+
+const ExpandableFooterLinks = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const services = [
+    "Web App Development",
+    "Mobile App Development",
+    "Low-code/No-code Development",
+    "Data Analytics",
+    "AR VR",
+    "QR Code",
+    "BIM Technology",
+    "Digital Twins",
+    "API Integration",
+    "Microservices Architecture",
+    "DevOps and CI/CD",
+    "AI Services",
+    "Cloud Computing",
+    "Serverless Computing",
+    "Cybersecurity",
+    "Business Automation",
+    "Gamification",
+    "IOT Development",
+    "Blockchain",
+    "Robotics Development",
+    "Quantum Computing",
+  ];
+
+  return (
+    <motion.div layout>
+      <ul className="text-left space-y-2">
+        {services.slice(0, 6).map((service, index) => (
+          <FooterLink key={index} href="/myspace/apps">
+            {service}
+          </FooterLink>
+        ))}
+      </ul>
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.ul
+            className="text-left space-y-2 mt-2"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {services.slice(6).map((service, index) => (
+              <FooterLink key={index + 6} href="/myspace/apps">
+                {service}
+              </FooterLink>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+      <motion.button
+        className="mt-4 text-indigo-400 hover:text-indigo-300 transition-colors duration-300 flex items-center"
+        onClick={() => setIsExpanded(!isExpanded)}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <span className="mr-2">{isExpanded ? 'Collapse' : 'Expand'}</span>
+        <motion.div
+          initial={false}
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </motion.div>
+      </motion.button>
+    </motion.div>
+  );
+};
 
 const SocialLink = ({ href, network, bgColor }) => (
   <motion.div
@@ -287,23 +359,48 @@ const Footer = () => {
               <FooterLink href="/tos">Terms</FooterLink>
               <FooterLink href="/tos">Privacy</FooterLink>
             </ul>
-           <div className="footer-link footer-link-quickaccess">
-            <a href="#" className="slant">Explore</a>
-            <a href="#" className="liquid">Visit</a>
-          </div>
+            <form onSubmit={handleSearchSubmit} className="flex text-gray-50 justify-center mt-12">
+              <TextField
+                variant="outlined"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon className="text-gray-400" />
+                    </InputAdornment>
+                  ),
+                  className: "bg-gray-800 text-white rounded-full border-gray-600 hover:border-gray-400 transition-colors duration-300",
+                  sx: {
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255, 255, 255, 0.5)',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255, 255, 255, 0.7)',
+                    },
+                    '& input::placeholder': {
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      opacity: 1,
+                    },
+                  },
+                }}
+                className="w-full text-white max-w-md"
+              />
+            </form>
+            <div className="footer-link footer-link-quickaccess">
+              <a href="#" className="slant">Explore</a>
+              <a href="#" className="liquid">Visit</a>
+            </div>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" component="h3" gutterBottom className="text-left font-bold text-indigo-400">
               SERVICES
             </Typography>
-            <ul className="text-left space-y-2">
-              <FooterLink href="/myspace/apps">Web App Development</FooterLink>
-              <FooterLink href="/myspace/apps">Mobile App Development</FooterLink>
-              <FooterLink href="/myspace/apps">API Integration</FooterLink>
-              <FooterLink href="/myspace/apps">Artificial Intelligence</FooterLink>
-              <FooterLink href="/myspace/apps">BIM Technology</FooterLink>
-              <FooterLink href="/myspace/apps">AR VR</FooterLink>
-            </ul>
+            <ExpandableFooterLinks />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" component="h3" gutterBottom className="text-left font-bold text-indigo-400">
@@ -329,40 +426,6 @@ const Footer = () => {
             </Box>
           </Grid>
         </Grid>
-        <Box className="mb-6 mobileXL:mt-28">
-          <form onSubmit={handleSearchSubmit} className="flex text-gray-50 justify-center">
-            <TextField
-              variant="outlined"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon className="text-gray-400" />
-                  </InputAdornment>
-                ),
-                className: "bg-gray-800 text-white rounded-full border-gray-600 hover:border-gray-400 transition-colors duration-300",
-                sx: {
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(255, 255, 255, 0.7)',
-                  },
-                  '& input::placeholder': {
-                    color: 'rgba(255, 255, 255, 0.5)',
-                    opacity: 1,
-                  },
-                },
-              }}
-              className="w-full text-white max-w-md"
-            />
-          </form>
-        </Box>
         <Box className="relative flex items-center justify-center mt-12 mobileL:absolute mobileL:bottom-96 mobileL:right-6 mobileXL:bottom-52 mobileXL:right-16">
           <Box style={{ width: '200px', height: '200px' }}>
             <Canvas camera={{ position: [0, 0, 30], fov: 90 }}>
@@ -378,7 +441,7 @@ const Footer = () => {
         </Box>
         <Box className="border-t border-gray-700 mt-12 pt-8 text-center">
           <Typography variant="body2" className="text-gray-400">
-            &copy; {new Date().getFullYear()} WApp. All rights reserved.
+            &copy; {new Date().getFullYear()} Telamonix. All rights reserved.
           </Typography>
         </Box>
       </Container>

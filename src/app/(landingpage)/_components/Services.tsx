@@ -1,6 +1,27 @@
 import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Code, Smartphone, Database, Zap, Building2, Workflow, Brain, Wifi, Gamepad2, Bitcoin, QrCode } from 'lucide-react';
+import { 
+  ArrowRight, 
+  Code, 
+  Smartphone, 
+  Database, 
+  Zap, 
+  Building2, 
+  Workflow, 
+  Brain, 
+  Wifi, 
+  Gamepad2, 
+  Bitcoin, 
+  QrCode,
+  Copy,
+  Network,
+  GitBranch,
+  Cloud,
+  Server,
+  Shield,
+  Cpu,
+  Atom
+} from 'lucide-react';
 import { BsHeadsetVr } from 'react-icons/bs';
 import PDFContainer from './PDFContainer';
 import { useInView } from 'react-intersection-observer';
@@ -9,8 +30,17 @@ import { Card, CardHeader, CardBody, CardFooter, Image, Button, Modal, ModalCont
 const services = [
   { id: "web", title: 'Web App Development', description: 'Custom web applications tailored to your needs', icon: Code, videoId: 'dQw4w9WgXcQ' },
   { id: "mobile", title: 'Mobile App Development', description: 'Native and cross-platform mobile solutions', icon: Smartphone, videoId: 'dQw4w9WgXcQ' },
+  { id: "lowcode", title: 'Low-code/No-code Development', description: 'Rapid application development with minimal coding', icon: Zap, videoId: 'dQw4w9WgXcQ' },
   { id: "data", title: 'Data Analytics', description: 'Unlock insights from your data', icon: Database, videoId: 'dQw4w9WgXcQ' },
   { id: "automation", title: 'Business Automation', description: 'Streamline your operations', icon: Zap, videoId: 'dQw4w9WgXcQ' },
+  { id: "twins", title: 'Digital Twins', description: 'Virtual representations of physical assets or systems', icon: Copy, videoId: 'dQw4w9WgXcQ' },
+  { id: "microservices", title: 'Microservices Architecture', description: 'Modular and scalable application design', icon: Network, videoId: 'dQw4w9WgXcQ' },
+  { id: "devops", title: 'DevOps and CI/CD', description: 'Streamlined development and deployment processes', icon: GitBranch, videoId: 'dQw4w9WgXcQ' },
+  { id: "cloud", title: 'Cloud Computing', description: 'Scalable and flexible cloud-based solutions', icon: Cloud, videoId: 'dQw4w9WgXcQ' },
+  { id: "serverless", title: 'Serverless Computing', description: 'Build and run applications without managing servers', icon: Server, videoId: 'dQw4w9WgXcQ' },
+  { id: "cybersecurity", title: 'Cybersecurity', description: 'Protect your digital assets and data', icon: Shield, videoId: 'dQw4w9WgXcQ' },
+  { id: "robotics", title: 'Robotics Development', description: 'Design and programming of robotic systems', icon: Cpu, videoId: 'dQw4w9WgXcQ' },
+  { id: "quantum", title: 'Quantum Computing', description: 'Harnessing quantum mechanics for computational power', icon: Atom, videoId: 'dQw4w9WgXcQ' },
   { id: "bim", title: 'BIM Technology', description: 'Advanced building information modeling', icon: Building2, videoId: 'dQw4w9WgXcQ' },
   { id: "api", title: 'API Integration', description: 'Seamless connection of systems', icon: Workflow, videoId: 'dQw4w9WgXcQ' },
   { id: "ai", title: 'AI Services', description: 'AI model training and applications', icon: Brain, videoId: 'dQw4w9WgXcQ' },
