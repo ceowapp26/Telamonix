@@ -1,10 +1,13 @@
 "use client"
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, useAnimation, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import $ from 'jquery';
 import { Rocket, CheckCircle, Clock, Users, Cog, Headphones, ChevronDown } from 'lucide-react';
+import { FaComments, FaClipboardList, FaLaptopCode, FaRocket, FaHeadset } from 'react-icons/fa';
 import { Popover, PopoverTrigger, PopoverContent, Card, CardHeader, CardBody, CardFooter, Image, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+
+const iconComponents = [FaComments, FaClipboardList, FaLaptopCode, FaRocket, FaHeadset];
 
 const steps = [
   {
@@ -64,66 +67,109 @@ const steps = [
   },
 ];
 
-const StepCard = ({ title, content, isOpen, onOpenChange, onClose }) => {
+const StepCard = ({ step, isOpen, onOpenChange, onClose }) => {
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.8, y: 50 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      y: 0,
+      transition: { type: 'spring', damping: 25, stiffness: 500 }
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 0.8, 
+      y: 50,
+      transition: { duration: 0.2 }
+    }
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { delay: 0.2, duration: 0.5 } }
+  };
+
+  const IconComponent = iconComponents[parseInt(step.number) - 1];
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      onClose={onClose}
-      aria-labelledby="modal-title"
-      backdrop="blur"
-      motionProps={{
-        variants: {
-          enter: {
-            y: 0,
-            opacity: 1,
-            transition: {
-              duration: 0.3,
-              ease: "easeOut",
-            },
-          },
-          exit: {
-            y: -20,
-            opacity: 0,
-            transition: {
-              duration: 0.2,
-              ease: "easeIn",
-            },
-          },
-        }
-      }}
-      classNames={{
-        wrapper: 'z-[99999]',
-        body: 'py-6',
-        backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
-        base: 'border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]',
-        header: 'border-b-[1px] border-[#292f46]',
-        footer: 'border-t-[1px] border-[#292f46]',
-        closeButton: 'hover:bg-white/5 active:bg-white/10',
-      }}
-    >
-      <ModalContent>
-       {(onClose) => (
-        <>
-          <ModalHeader>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h3>
-          </ModalHeader>
-          <ModalBody>
-            <div className="p-4 overflow-y-auto max-h-[60vh]">
-              <div>
-                {content}
-              </div>
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button auto flat color="error" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </>
+    <AnimatePresence>
+      {isOpen && (
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          onClose={onClose}
+          motionProps={{
+            variants: modalVariants,
+            initial: "hidden",
+            animate: "visible",
+            exit: "exit"
+          }}
+          classNames={{
+            wrapper: 'z-[99999]',
+            body: 'p-0',
+            backdrop: "bg-gradient-to-t from-zinc-900/50 to-zinc-900/30 backdrop-blur-sm",
+            base: 'border-0 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 text-gray-800 dark:text-gray-100',
+            header: 'border-b-0',
+            footer: 'border-t-0',
+            closeButton: 'hover:bg-white/10 active:bg-white/20',
+          }}
+        >
+          <ModalContent className="max-w-md mx-auto">
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  <motion.div 
+                    className="flex items-center gap-4"
+                    variants={contentVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <div className="p-3 bg-indigo-600 rounded-full">
+                      <IconComponent className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold">{step.title}</h3>
+                  </motion.div>
+                </ModalHeader>
+                <ModalBody>
+                  <motion.div
+                    variants={contentVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="p-6"
+                  >
+                    <p className="text-lg mb-4">{step.description}</p>
+                    <ul className="space-y-3">
+                      {step.details.map((detail, i) => (
+                        <motion.li 
+                          key={i}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 + i * 0.1 }}
+                          className="flex items-start"
+                        >
+                          <span className="inline-block w-2 h-2 mt-2 mr-3 bg-indigo-600 rounded-full" />
+                          <span>{detail}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="primary"
+                    variant="shadow"
+                    onPress={onClose}
+                    className="w-full"
+                  >
+                    Close
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
       )}
-      </ModalContent>
-    </Modal>
+    </AnimatePresence>
   );
 }
 
@@ -244,8 +290,6 @@ const Process = () => {
       return stepHeight * step + stepOffset;
     }
   };
-
-  const iconComponents = [CheckCircle, Clock, Users, Cog, Headphones];
 
   return (
     <section 
@@ -373,6 +417,7 @@ const StepItem = ({ step, index, isActive, isCompleted }) => {
         </div>
       </motion.div>
       <StepCard
+        step={step}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         title={`${step.title} Details`}

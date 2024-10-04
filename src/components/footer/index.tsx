@@ -389,7 +389,7 @@ const Footer = () => {
                 className="w-full text-white max-w-md"
               />
             </form>
-            <div className="footer-link footer-link-quickaccess">
+            <div className="footer-link footer-link-quickaccess mb-8">
               <a href="#" className="slant">Explore</a>
               <a href="#" className="liquid">Visit</a>
             </div>
@@ -437,7 +437,7 @@ const Footer = () => {
             </Canvas>
           </Box>
         </Box>
-        <Box className="border-t border-gray-700 mt-12 pt-8 text-center">
+        <Box className="border-t border-gray-700 mt-16 pt-8 text-center">
           <Typography variant="body2" className="text-gray-400">
             &copy; {new Date().getFullYear()} Telamonix. All rights reserved.
           </Typography>
