@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import $ from 'jquery';
 import Header from './_components/Header';
 import Hero from './_components/Hero';
@@ -49,6 +49,11 @@ const LandingPage = () => {
     footerSectionRef
   ];
 
+  const handleScrollToContactSection = useCallback(() => {
+    setActiveSection(10);
+    contactSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
   const handleSectionClick = (section) => {
     setActiveSection(section);
     refs[section - 1].current.scrollIntoView({ behavior: 'smooth' });
@@ -97,7 +102,7 @@ const LandingPage = () => {
           <Navigation activeSection={activeSection} handleSectionClick={handleSectionClick} isSticky={isSticky} isVisible={isVisible} />
         </div>
         <div ref={heroSectionRef}>
-          <Hero />
+          <Hero handleScrollTo={handleScrollToContactSection} />
         </div>
         <AnimatedSection animation="slideFromLeft">
           <div ref={servicesSectionRef}>

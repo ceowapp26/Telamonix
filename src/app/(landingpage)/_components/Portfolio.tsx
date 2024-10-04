@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -206,11 +207,13 @@ const Portfolio = () => {
                 transition={{ duration: 0.4 }}
                 className="project-item bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
               >
-                <div className="relative overflow-hidden group">
-                  <img
-                    src={project.image}
+                <div className="relative w-full h-56 overflow-hidden group">
+                  <NextImage
                     alt={project.title}
-                    className="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-300"
+                    src={project.image}
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-300"
+                    layout="fill"
+                    objectFit="cover"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Link href={project.link} target="_blank" className="text-white text-lg font-semibold hover:underline flex items-center">

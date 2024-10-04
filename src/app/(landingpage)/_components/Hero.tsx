@@ -106,7 +106,7 @@ const TypewriterEffect = ({ texts, speed = 50, delayBetweenTexts = 2000 }) => {
   );
 };
 
-const HeroInfo = () => {
+const HeroInfo = ({ handleScrollTo }) => {
   const maskImages = [
     '/global/images/hero/hero-background-bottom-line-1.png',
     '/global/images/hero/hero-background-bottom-line-2.png',
@@ -251,7 +251,7 @@ const HeroInfo = () => {
                 ))}
               </div>
               <div className="relative mt-4 sm:mt-6 md:mt-8 pointer-events-auto cursor-pointer">
-                <CustomButton text="Get In Touch" />
+                <CustomButton text="Get In Touch" onClick={handleScrollTo} />
               </div>
             </motion.div>
           </div>
@@ -261,7 +261,7 @@ const HeroInfo = () => {
   );
 };
 
-const Hero = () => {
+const Hero = ({ handleScrollTo }) => {
   const headingRef = useRef();
   
   useEffect(() => {
@@ -278,7 +278,7 @@ const Hero = () => {
       <div className="container mx-auto px-0 xl:px-4">
         <div className="flex flex-col xl:flex-row min-h-screen h-full">
           <div className="w-full flex xl:w-1/2 py-8 xl:py-0">
-            <HeroInfo />
+            <HeroInfo handleScrollTo={handleScrollTo} />
           </div>
           <div className="hidden xl:block w-1/2 relative">
             <HeroScene />
@@ -420,6 +420,5 @@ const HeroScene = () => {
 };
 
 export default Hero;
-
 
 

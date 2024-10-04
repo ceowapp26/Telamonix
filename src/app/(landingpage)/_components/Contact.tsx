@@ -1211,13 +1211,12 @@ LoadBar.prototype.assignBufFloat = function( buf , index , f ){
 
 }
 
-// Define the schema for form validation
 const schema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters long" }),
+  name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Invalid email address" }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters long" }),
+  socialMediaLink: z.string().optional(),
+  message: z.string().min(1, { message: "Message is required" }),
 });
-
 
 const Contact = () => {
   const containerRef = useRef(null);
@@ -1358,6 +1357,7 @@ const Contact = () => {
                 <label htmlFor="name" className="block text-gray-300 font-semibold mb-2">Name</label>
                 <input 
                   {...register('name')}
+                  placeholder="Enter your name"
                   type="text" 
                   id="name" 
                   className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" 
@@ -1370,9 +1370,20 @@ const Contact = () => {
                   {...register('email')}
                   type="email" 
                   id="email" 
+                  placeholder="Enter your work email"
                   className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" 
                 />
                 {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              </div>
+              <div>
+                <label htmlFor="socialMediaLink" className="block text-gray-300 font-semibold mb-2">Social Media Link (Optional)</label>
+                <input 
+                  {...register('socialMediaLink')}
+                  type="text" 
+                  id="socialMediaLink" 
+                  placeholder="Link to your LinkedIn, Twitter, etc... (optional)"
+                  className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" 
+                />
               </div>
               <div>
                 <label htmlFor="message" className="block text-gray-300 font-semibold mb-2">Message</label>
@@ -1380,6 +1391,7 @@ const Contact = () => {
                   {...register('message')}
                   id="message" 
                   rows="4" 
+                  placeholder="Brief description of your project requirements, project timeline, project budget, etc..."
                   className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" 
                 ></textarea>
                 {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
