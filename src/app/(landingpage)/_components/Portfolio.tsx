@@ -23,7 +23,9 @@ const industries = [
 ];
 
 const projects = [
-  { title: 'WApp Platform', image: '/global/images/portfolio/product-1.png', link: 'https://wapp-pi.vercel.app', tags: ['Web', 'SaaS', 'UI/UX'] },
+  { title: 'WApp Platform', image: '/global/images/portfolio/product-1.png', link: 'https://wapp-pi.vercel.app', tags: ['Web', 'SaaS', 'UI/UX', 'Fullstack'] },
+  { title: 'Doc2Product', image: '/global/images/portfolio/product-shopify-1.png', link: 'https://youtu.be/sLqAy2-sGfY?si=-YDeN5f0cUBvWwja', tags: ['Shopify', 'SaaS', 'UI/UX', 'Fullstack', 'AI', 'SEO'] },
+  { title: 'Optiwrite', image: '/global/images/portfolio/product-shopify-2.png', link: 'https://youtu.be/T30vhzfHLRA?si=ye0Hs3CPP1tybWW3', tags: ['Shopify', 'SaaS', 'UI/UX', 'Fullstack', 'AI', 'SEO'] },
   { title: 'Jewelry Try-on', image: '/global/images/portfolio/product-2.png', link: 'http://54.253.104.12:8000/index-ai.html/', tags: ['Web', 'Application', 'IT', 'AI', 'AR/VR', 'Retail'] },
   { title: '3D Generator', image: '/global/images/portfolio/product-3.png', link: 'http://54.253.104.12:8000/index-3d.html/', tags: ['Mobile', 'IT', 'AI', '3D Modeling'] },
   { title: 'Face Animation', image: '/global/images/portfolio/product-4.png', link: 'http://54.253.104.12:8000/faceAnimation.html/', tags: ['Web', 'IT', 'Computer Vision', 'Entertainment'] },
